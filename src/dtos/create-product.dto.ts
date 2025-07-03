@@ -1,4 +1,6 @@
 import {
+	IsBoolean,
+	isNotEmpty,
 	IsNotEmpty,
 	IsNumber,
 	IsPositive,
@@ -8,7 +10,7 @@ import {
 	Min
 } from 'class-validator'
 import { Transform, Type } from 'class-transformer';
-import { trim} from './common.dto';
+import { trim, trimLower} from './common.dto';
 
 
 export class CreateProductDto{

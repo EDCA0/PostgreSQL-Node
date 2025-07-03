@@ -1,8 +1,6 @@
-import { faker, th } from "@faker-js/faker";
+import { faker} from "@faker-js/faker";
 import { IProduct,UpdateProductInput } from "../models/index";
 import { CreateProductDto } from "../dtos";
-
-
 
 export class ProductService {
 	protected products  : IProduct[] = [];

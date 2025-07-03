@@ -12,7 +12,8 @@ import { trim, trimLower } from './common.dto';
 
 
 export class CreateUserDto{
-	@Transform(trim)	@IsNotEmpty({
+	@Transform(trim)	
+	@IsNotEmpty({
 		message : 'El nombre no puede estar vacío',
 	})
 	@Matches(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s'-]+$/, {

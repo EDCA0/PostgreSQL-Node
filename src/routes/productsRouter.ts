@@ -1,10 +1,10 @@
 import  express, {NextFunction, Request, Response, Router}	from "express";
 
 import { CreateProductDto, UpdateProductDto } 							from "../dtos";
-import { IApiResponse, IProduct} 														from "../models";
-import { NotFoundError } 																		from "../utils/httpErrors";
-import { ProductService}																		from "../services/product.service";
-import { validationHandler } 								  							from "../middlewares/validator.handler";
+import { IApiResponse, IProduct}										from "../models";
+import { NotFoundError }												from "../utils/httpErrors";
+import { ProductService}												from "../services/product.service";
+import { validationHandler }											from "../middlewares/validator.handler";
 
 
 export const productsRouter  : Router = express.Router()

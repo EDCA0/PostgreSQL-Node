@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import express, {Request, Response}   		 from "express";
 import { routerApi } from "./routes";
 import {logErrors, errorHandler} from "./middlewares/error.handler"

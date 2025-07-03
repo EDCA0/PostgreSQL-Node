@@ -5,29 +5,7 @@ export const usersRouter : Router = express.Router()
 const service = new userService()
 
 usersRouter.get('/', (request : Request, response : Response) => {
-	// const limit  : number = parseInt(request.query.limit as string, 10);
-	// const offset : number = parseInt(request.query.offset as string, 10);
 	const users  = service.find();
-
-// ToDo => Implementar
-	// if(limit && offset) {
-	// 	if(isNaN(limit) || isNaN(offset)) {
-	// 		return response.status(400).json( {
-	// 			error: 'Limit y offset deben ser numeros'
-	// 		});
-	// 	}
-	// 	if(limit >= 0 && offset >= 0){
-	// 		response.json({
-	// 			limit,
-	// 			offset
-	// 		});
-	// 	} else {
-	// 		return response.status(400).json( {
-	// 			error: 'Limit y offset deben ser mayores o iguales a 0'
-	// 		});
-	// 	}
-	// }
-
 	response.json(users);
 });
 

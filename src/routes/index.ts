@@ -9,8 +9,8 @@ export function routerApi(app: Application): void {
 	const router: Router = express.Router();
 	app.use('/api/v1', router);
 
+	router.use('/categories', categoriesRouter);
+	router.use('/inicio', inicioRouter);
 	router.use('/products', productsRouter);
 	router.use('/users', usersRouter);
-	router.use('/inicio', inicioRouter);
-	router.use('/categories', categoriesRouter);
 }

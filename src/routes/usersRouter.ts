@@ -1,59 +1,124 @@
-import express, { Request, Response, Router } from 'express';
-import { userService } from '../services/user.service';
+import express, { NextFunction, Request, Response, Router } from 'express';
+import { UserService } from '../services/user.service';
+import { User, ApiResponse } from '../models';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { validationHandler } from '../middlewares/validator.handler';
 
 export const usersRouter: Router = express.Router();
-const service = new userService();
+const service = new UserService();
 
-usersRouter.get('/', (request: Request, response: Response) => {
-	const users = service.find();
-	response.json(users);
-});
+usersRouter.post(
+	'/',
+	validationHandler(CreateUserDto),
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const body = request.body;
+			const newBody = await service.create(body);
+			const responseApi: ApiResponse<User> = {
+				success: true,
+				statusCode: 201,
+				data: newBody,
+			};
 
-usersRouter.get('/:id', (request: Request, response: Response) => {
-	const id: string = request.params.id;
-	const user = service.findOne(id);
-	response.json({
-		message: 'Mensaje enviado',
-		data: user,
-	});
-});
+			response.status(201).json(responseApi);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
-usersRouter.post('/', (request: Request, response: Response) => {
-	const body = request.body;
-	const newBody = service.create(body);
-	response.status(201).json({
-		message: 'created',
-		data: newBody,
-	});
-});
+usersRouter.get(
+	'/',
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const users = await service.find();
+			const responseApi: ApiResponse<User[]> = {
+				success: true,
+				statusCode: 200,
+				data: users,
+			};
+			response.status(200).json(responseApi);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
-usersRouter.patch('/:id', (request: Request, response: Response) => {
-	const id: string = request.params.id;
-	const body = request.body;
+usersRouter.get(
+	'/:id',
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const id: string = request.params.id;
+			const user = await service.findOne(id);
+			const responseApi: ApiResponse<User> = {
+				success: true,
+				statusCode: 200,
+				data: user,
+			};
 
-	const update = service.updatePath(id, body);
-	response.status(202).json({
-		message: 'Updated',
-		data: update,
-	});
-});
+			response.status(200).json(responseApi);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
-usersRouter.put('/:id', (request: Request, response: Response) => {
-	const id: string = request.params.id;
-	const body = request.body;
+usersRouter.patch(
+	'/:id',
+	validationHandler(UpdateUserDto),
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const id: string = request.params.id;
+			const body = request.body;
 
-	const update = service.updatePut(id, body);
-	response.status(202).json({
-		message: 'Updated',
-		data: update,
-	});
-});
+			const userUpdated: User = await service.updatePatch(id, body);
 
-usersRouter.delete('/:id', (request: Request, response: Response) => {
-	const id: string = request.params.id;
-	service.delete(id);
-	response.status(200).json({
-		message: 'Deleted',
-		data: `Elemento ${id} eliminado`,
-	});
-});
+			const responseApi: ApiResponse<User> = {
+				success: true,
+				statusCode: 200,
+				data: userUpdated,
+			};
+
+			response.status(200).json(responseApi);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+usersRouter.put(
+	'/:id',
+	validationHandler(CreateUserDto),
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const id: string = request.params.id;
+			const body = request.body;
+
+			const userUpdated: User = await service.updatePut(id, body);
+
+			const responseApi: ApiResponse<User> = {
+				success: true,
+				statusCode: 200,
+				data: userUpdated,
+			};
+
+			response.status(200).json(responseApi);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+usersRouter.delete(
+	'/:id',
+	async (request: Request, response: Response, next: NextFunction) => {
+		try {
+			const id: string = request.params.id;
+			await service.delete(id);
+
+			response.sendStatus(204);
+		} catch (error) {
+			next(error);
+		}
+	},
+);

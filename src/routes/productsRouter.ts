@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos';
-import { IApiResponse, IProduct } from '../models';
-import { NotFoundError } from '../utils/httpErrors';
+import { ApiResponse, Product } from '../models';
 import { ProductService } from '../services/product.service';
 import { validationHandler } from '../middlewares/validator.handler';
 
@@ -18,7 +17,7 @@ productsRouter.post(
 			const body: CreateProductDto = request.body;
 			const newProduct = await service.create(body);
 
-			const apiResponse: IApiResponse<IProduct> = {
+			const apiResponse: ApiResponse<Product> = {
 				success: true,
 				statusCode: 201,
 				data: newProduct,
@@ -37,7 +36,7 @@ productsRouter.get(
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
 			const products = await service.find();
-			const apiResponse: IApiResponse<IProduct[]> = {
+			const apiResponse: ApiResponse<Product[]> = {
 				success: true,
 				statusCode: 200,
 				data: products,
@@ -58,11 +57,7 @@ productsRouter.get(
 			const id: string = request.params.id;
 			const product = await service.findOne(id);
 
-			if (!product) {
-				throw new NotFoundError('El producto no fue encontrado');
-			}
-
-			const apiResponse: IApiResponse<IProduct> = {
+			const apiResponse: ApiResponse<Product> = {
 				success: true,
 				statusCode: 200,
 				data: product,
@@ -85,11 +80,7 @@ productsRouter.patch(
 			const body: UpdateProductDto = request.body;
 			const updatedProduct = await service.updatePatch(id, body);
 
-			if (!updatedProduct) {
-				throw new NotFoundError('Producto no encontrado para actualizar');
-			}
-
-			const apiResponse: IApiResponse<IProduct> = {
+			const apiResponse: ApiResponse<Product> = {
 				success: true,
 				statusCode: 200,
 				data: updatedProduct,
@@ -112,11 +103,7 @@ productsRouter.put(
 			const body: CreateProductDto = request.body;
 			const updatedProduct = await service.updatePut(id, body);
 
-			if (!updatedProduct) {
-				throw new NotFoundError('Producto no encontrado para actualizar');
-			}
-
-			const apiResponse: IApiResponse<IProduct> = {
+			const apiResponse: ApiResponse<Product> = {
 				success: true,
 				statusCode: 200,
 				data: updatedProduct,
@@ -134,8 +121,8 @@ productsRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = await request.params.id;
-			service.delete(id);
+			const id: string = request.params.id;
+			await service.delete(id);
 
 			response.sendStatus(204);
 		} catch (error) {

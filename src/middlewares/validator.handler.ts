@@ -13,7 +13,7 @@ export function validationHandler<T extends object>(dtoClass: { new (): T }) {
 				const messages = errors.flatMap((error) =>
 					Object.values(error.constraints ?? {}),
 				);
-				throw new BadRequestError (messages.join(', '));
+				throw new BadRequestError(messages.join(', '));
 			}
 			next();
 		} catch (error) {

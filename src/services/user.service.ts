@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
-import { IUser, CreateUserInput, UpdateUserInput } from '../models/user.model';
-import { Gender } from '../models/user.model';
+import { User, UpdateUserInput, Gender } from '../models/';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { NotFoundError } from '../utils/httpErrors';
 
 const GENDERS: Gender[] = [Gender.MALE, Gender.FEMALE, Gender.OTHER];
 
-export class userService {
-	protected users: IUser[] = [];
+export class UserService {
+	protected users: User[] = [];
 	constructor() {
 		this.generate();
 	}
@@ -26,36 +26,40 @@ export class userService {
 		}
 	}
 
-	create(body: CreateUserDto) {
-		const { name, email, address, phone, gender } = body;
-		const newBody = {
+	async create(body: CreateUserDto): Promise<User> {
+		const newBody: User = {
 			id: faker.string.uuid(),
-			name,
-			email,
-			address,
-			phone,
-			gender,
+			name: body.name,
+			email: body.email,
+			address: body.address,
+			phone: body.phone,
+			gender: body.gender,
 		};
 
 		this.users.push(newBody);
 		return newBody;
 	}
 
-	find() {
+	async find(): Promise<User[]> {
 		return this.users;
 	}
 
-	findOne(id: string) {
-		return this.users.find((item) => item.id === id);
+	async findOne(id: string): Promise<User> {
+		const user = this.users.find((item) => item.id === id);
+		if (!user) {
+			throw new NotFoundError('User not found');
+		}
+		return user;
 	}
 
-	updatePath(id: string, changes: CreateUserInput) {
-		const index = this.users.findIndex((item) => item.id === id);
+	async updatePatch(id: string, changes: UpdateUserInput): Promise<User> {
+		const index: number = this.users.findIndex((item) => item.id === id);
+
 		if (index === -1) {
-			throw new Error('No se encontro el indice');
+			throw new NotFoundError('User not found');
 		}
 
-		const user = this.users[index];
+		const user: User = this.users[index];
 		this.users[index] = {
 			...user,
 			...changes,
@@ -64,25 +68,26 @@ export class userService {
 		return this.users[index];
 	}
 
-	updatePut(id: string, changes: UpdateUserInput) {
-		const index = this.users.findIndex((item) => item.id === id);
+	async updatePut(id: string, changes: CreateUserDto): Promise<User> {
+		const index: number = this.users.findIndex((item) => item.id === id);
 		if (index === -1) {
-			throw new Error('No se encontro el indice');
+			throw new NotFoundError('User not found');
 		}
 
-		const user = this.users[index];
 		this.users[index] = {
-			...user,
+			id: this.users[index].id,
 			...changes,
 		};
 
 		return this.users[index];
 	}
 
-	delete(id: string) {
+	async delete(id: string): Promise<void> {
 		const index = this.users.findIndex((item) => item.id === id);
 
+		if (index === -1) {
+			throw new NotFoundError('User not found');
+		}
 		this.users.splice(index, 1);
-		return id;
 	}
 }

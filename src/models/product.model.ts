@@ -1,9 +1,9 @@
-export interface IProduct {
+export interface Product {
 	readonly id: string;
 	name: string;
 	price: number;
 	image: string;
 }
 
-export type CreateProduct = Omit<IProduct, 'id'>;
-export type UpdateProductInput = Partial<IProduct>;
+export type CreateProduct = Omit<Product, 'id'>;
+export type UpdateProductInput = Partial<CreateProduct>;

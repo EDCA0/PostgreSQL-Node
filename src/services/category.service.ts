@@ -1,15 +1,16 @@
 import { CreateCategoryDto } from '../dtos/create-category.dto';
-import { CategoryPatch, CategoryPut, ICategory } from '../models';
+import { CategoryPatch, CategoryPut, Category } from '../models';
 import { faker } from '@faker-js/faker';
+import { NotFoundError } from '../utils/httpErrors';
 
 export class CategoryService {
-	protected categories: ICategory[] = [];
+	protected categories: Category[] = [];
 
 	constructor() {}
 
 	// POST (crear categoria)
-	async create(body: CreateCategoryDto): Promise<ICategory> {
-		const newBody: ICategory = {
+	async create(body: CreateCategoryDto): Promise<Category> {
+		const newBody: Category = {
 			id: faker.string.uuid(),
 			name: body.name,
 			image: body.image,
@@ -20,13 +21,17 @@ export class CategoryService {
 	}
 
 	//  GET (Traer todos)
-	find() {
+	async find(): Promise<Category[]> {
 		return this.categories;
 	}
 
 	// GET (Traer uno por ID)
-	async findOne(id: number | string): Promise<ICategory | undefined> {
-		return this.categories.find((item) => item.id === id);
+	async findOne(id: number | string): Promise<Category> {
+		const category = this.categories.find((item) => item.id === id);
+		if (!category) {
+			throw new NotFoundError('Category not found');
+		}
+		return category;
 	}
 
 	// PATCH (Actualizacion parcial por ID)
@@ -34,7 +39,7 @@ export class CategoryService {
 		const index = this.categories.findIndex((item) => item.id === id);
 
 		if (index === -1) {
-			throw new Error('Category not found');
+			throw new NotFoundError('Category not found');
 		}
 
 		this.categories[index] = {
@@ -50,7 +55,7 @@ export class CategoryService {
 		const index = this.categories.findIndex((item) => item.id === id);
 
 		if (index === -1) {
-			throw new Error('Category not found');
+			throw new NotFoundError('Category not found');
 		}
 
 		this.categories[index] = {
@@ -62,11 +67,11 @@ export class CategoryService {
 	}
 
 	// DELETE (Eliminacion por ID)
-	delete(id: string | number) {
+	async delete(id: string | number): Promise<void> {
 		const index = this.categories.findIndex((item) => item.id === id);
 
 		if (index === -1) {
-			throw new Error('Category not found');
+			throw new NotFoundError('Category not found');
 		}
 
 		this.categories.splice(index, 1);

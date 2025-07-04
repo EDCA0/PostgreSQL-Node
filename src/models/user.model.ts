@@ -4,7 +4,7 @@ export enum Gender {
 	OTHER = 'other',
 }
 
-export interface IUser {
+export interface User {
 	readonly id: string;
 	name: string;
 	email: string;
@@ -13,5 +13,5 @@ export interface IUser {
 	gender: Gender;
 }
 
-export type CreateUserInput = Omit<IUser, 'id'>;
-export type UpdateUserInput = Partial<Omit<IUser, 'id'>>;
+export type CreateUserInput = Omit<User, 'id'>;
+export type UpdateUserInput = Partial<CreateUserInput>;

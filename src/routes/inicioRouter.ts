@@ -1,8 +1,7 @@
-import express, {Router, Request, Response} from "express";
+import express, { Router, Request, Response } from 'express';
 
+export const inicioRouter: Router = express.Router();
 
-export const inicioRouter : Router = express.Router();
-
-inicioRouter.get('/', (request : Request , response : Response ) => {
+inicioRouter.get('/', (request: Request, response: Response) => {
 	response.send('Hola este es el inicio del servidor');
 });

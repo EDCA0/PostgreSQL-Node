@@ -1,6 +1,6 @@
 
 
-[Acerca del Proyecto](#acerca-del-proyecto)
+- [Acerca del Proyecto](#acerca-del-proyecto)
 .
 .
 .
@@ -63410,4 +63410,4 @@
 .
 .
 
-## Acerca del proyecto {#acerca-del-proyecto}
+## Acerca del proyecto

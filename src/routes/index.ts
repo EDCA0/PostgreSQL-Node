@@ -1,9 +1,9 @@
 import express, { Application, Router } from 'express';
 
-import { inicioRouter } from './inicioRouter';
-import { productsRouter } from './productsRouter';
-import { usersRouter } from './usersRouter';
-import { categoriesRouter } from './categoriesRouter';
+import { inicioRouter } from './inicio.route';
+import { productsRouter } from './products.route';
+import { usersRouter } from './users.route';
+import { categoriesRouter } from './categories.route';
 
 export function routerApi(app: Application): void {
 	const router: Router = express.Router();

@@ -1,9 +1,21 @@
 export class HttpError extends Error {
 	statusCode: number;
 
-	constructor(message: string, statusCode: number) {
-		super(message);
+	details: string | string[];
+
+	constructor(message: string | string[], statusCode: number) {
+		let errorMessage: string;
+
+		if (Array.isArray(message)) {
+			errorMessage = message.join(', ');
+		} else {
+			errorMessage = message;
+		}
+
+		super(errorMessage);
 		this.statusCode = statusCode;
+		this.name = this.constructor.name;
+		this.details = message;
 	}
 }
 
@@ -14,7 +26,7 @@ export class NotFoundError extends HttpError {
 }
 
 export class BadRequestError extends HttpError {
-	constructor(message: string = 'Peticion incorrecta') {
+	constructor(message: string | string[] = 'Peticion incorrecta') {
 		super(message, 400);
 	}
 }

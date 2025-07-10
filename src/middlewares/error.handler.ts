@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../utils/httpErrors';
 
 export function logErrors(
 	error: Error,
-	request: Request,
-	response: Response,
+	_request: Request,
+	_response: Response,
 	next: NextFunction,
 ) {
 	console.log('LogErrors');
@@ -13,10 +13,10 @@ export function logErrors(
 }
 
 export function errorHandler(
-	error: Error,
-	request: Request,
+	error: any,
+	_request: Request,
 	response: Response,
-	next: NextFunction,
+	_next: NextFunction,
 ) {
 	let statusCode: number;
 	let message: string;

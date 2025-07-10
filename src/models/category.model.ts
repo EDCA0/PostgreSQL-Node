@@ -4,5 +4,5 @@ export interface Category {
 	image: string;
 }
 
-export type CategoryPatch = Partial<Omit<Category, 'id'>>;
 export type CategoryPut = Omit<Category, 'id'>;
+export type CategoryPatch = Partial<CategoryPut>;

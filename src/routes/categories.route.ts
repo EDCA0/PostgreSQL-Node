@@ -34,7 +34,7 @@ categoriesRouter.post(
 // GET (traer todos)
 categoriesRouter.get(
 	'/',
-	async (request: Request, response: Response, next: NextFunction) => {
+	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
 			const categories: Category[] = await service.find();
 

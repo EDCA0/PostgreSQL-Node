@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Product, UpdateProductInput } from '../models/index';
 import { CreateProductDto } from '../dtos';
+import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
 
 export class ProductService {
@@ -9,7 +9,7 @@ export class ProductService {
 		this.generate();
 	}
 
-	async generate() {
+	generate() {
 		const limit: number = 100;
 
 		for (let index = 0; index < limit; index++) {
@@ -29,7 +29,9 @@ export class ProductService {
 			price: body.price,
 			image: body.image,
 		};
-		this.products.push(newBody);
+
+		 this.products.push(newBody);
+
 		return newBody;
 	}
 
@@ -38,16 +40,17 @@ export class ProductService {
 	}
 
 	async findOne(id: string): Promise<Product> {
-		const product = this.products.find((item) => item.id === id);
+		const product =  this.products.find((product) => product.id === id);
 
 		if (!product) {
 			throw new NotFoundError('Product not found');
 		}
+
 		return product;
 	}
 
 	async updatePatch(id: string, body: UpdateProductInput): Promise<Product> {
-		const index = this.products.findIndex((item) => item.id === id);
+		const index =  this.products.findIndex((item) => item.id === id);
 
 		if (index === -1) {
 			throw new NotFoundError('Product not found');
@@ -61,15 +64,15 @@ export class ProductService {
 		return this.products[index];
 	}
 
-	async updatePut(id: string, body: CreateProductDto): Promise<Product> {
-		const index = this.products.findIndex((item) => item.id === id);
+	async updatePut(id: string, body: UpdateProductInput): Promise<Product> {
+		const index =  this.products.findIndex((item) => item.id === id);
 
 		if (index === -1) {
 			throw new NotFoundError('Product not found');
 		}
 
 		this.products[index] = {
-			id: this.products[index].id,
+			...this.products[index],
 			...body,
 		};
 
@@ -78,9 +81,11 @@ export class ProductService {
 
 	async delete(id: string): Promise<void> {
 		const index = this.products.findIndex((item) => item.id === id);
+
 		if (index === -1) {
 			throw new NotFoundError('Product not found');
 		}
-		this.products.splice(index, 1);
+
+		 this.products.splice(index, 1);
 	}
 }

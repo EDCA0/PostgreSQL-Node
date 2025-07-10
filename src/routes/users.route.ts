@@ -1,8 +1,13 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
-import { UserService } from '../services/user.service';
-import { User, ApiResponse } from '../models';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import {
+	CreateProductDto,
+	CreateUserDto,
+	UpdateProductDto,
+	UpdateUserDto,
+} from '../dtos';
 import { validationHandler } from '../middlewares/validator.handler';
+import { ApiResponse, User } from '../models';
+import { UserService } from '../services/user.service';
 
 export const usersRouter: Router = express.Router();
 const service = new UserService();
@@ -12,12 +17,12 @@ usersRouter.post(
 	validationHandler(CreateUserDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const body = request.body;
-			const newBody = await service.create(body);
+			const body = await service.create(request.body);
+
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 201,
-				data: newBody,
+				data: body,
 			};
 
 			response.status(201).json(responseApi);
@@ -29,14 +34,16 @@ usersRouter.post(
 
 usersRouter.get(
 	'/',
-	async (request: Request, response: Response, next: NextFunction) => {
+	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
 			const users = await service.find();
+
 			const responseApi: ApiResponse<User[]> = {
 				success: true,
 				statusCode: 200,
 				data: users,
 			};
+
 			response.status(200).json(responseApi);
 		} catch (error) {
 			next(error);
@@ -48,8 +55,9 @@ usersRouter.get(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
-			const user = await service.findOne(id);
+			const userId: string = request.params.id;
+			const user: User = await service.findOne(userId);
+
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 200,
@@ -71,12 +79,12 @@ usersRouter.patch(
 			const id: string = request.params.id;
 			const body = request.body;
 
-			const userUpdated: User = await service.updatePatch(id, body);
+			const updatedUser = await service.updatePatch(id, body);
 
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 200,
-				data: userUpdated,
+				data: updatedUser,
 			};
 
 			response.status(200).json(responseApi);
@@ -94,12 +102,11 @@ usersRouter.put(
 			const id: string = request.params.id;
 			const body = request.body;
 
-			const userUpdated: User = await service.updatePut(id, body);
-
+			const update = await service.updatePut(id, body);
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 200,
-				data: userUpdated,
+				data: update,
 			};
 
 			response.status(200).json(responseApi);
@@ -115,7 +122,6 @@ usersRouter.delete(
 		try {
 			const id: string = request.params.id;
 			await service.delete(id);
-
 			response.sendStatus(204);
 		} catch (error) {
 			next(error);

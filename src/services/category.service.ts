@@ -28,9 +28,11 @@ export class CategoryService {
 	// GET (Traer uno por ID)
 	async findOne(id: number | string): Promise<Category> {
 		const category = this.categories.find((item) => item.id === id);
+
 		if (!category) {
 			throw new NotFoundError('Category not found');
 		}
+
 		return category;
 	}
 

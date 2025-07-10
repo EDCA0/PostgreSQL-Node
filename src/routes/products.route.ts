@@ -1,9 +1,10 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos';
+import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse, Product } from '../models';
 import { ProductService } from '../services/product.service';
-import { validationHandler } from '../middlewares/validator.handler';
+import { NotFoundError } from '../utils/httpErrors';
 
 export const productsRouter: Router = express.Router();
 const service = new ProductService();
@@ -33,7 +34,7 @@ productsRouter.post(
 //  GET (traer todos)
 productsRouter.get(
 	'/',
-	async (request: Request, response: Response, next: NextFunction) => {
+	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
 			const products = await service.find();
 			const apiResponse: ApiResponse<Product[]> = {
@@ -121,7 +122,7 @@ productsRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: string =  request.params.id;
 			await service.delete(id);
 
 			response.sendStatus(204);

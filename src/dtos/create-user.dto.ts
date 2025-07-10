@@ -1,13 +1,13 @@
+import { Transform } from 'class-transformer';
 import {
-	IsNotEmpty,
-	Length,
-	Matches,
-	IsPhoneNumber,
 	IsEmail,
 	IsEnum,
+	IsNotEmpty,
+	IsPhoneNumber,
+	Length,
+	Matches,
 } from 'class-validator';
 import { Gender } from '../models/user.model';
-import { Transform } from 'class-transformer';
 import { trim, trimLower } from './common.dto';
 
 export class CreateUserDto {
@@ -23,7 +23,7 @@ export class CreateUserDto {
 		message:
 			'El nombre debe de estar entre $constraint1 y $constraint2 caracteres',
 	})
-	declare name: string;
+	name!: string;
 
 	@Transform(trimLower)
 	@IsNotEmpty({
@@ -35,7 +35,7 @@ export class CreateUserDto {
 			message: 'Debe ser un email válido',
 		},
 	)
-	declare email: string;
+	email!: string;
 
 	@Transform(trim)
 	@IsNotEmpty({
@@ -48,14 +48,14 @@ export class CreateUserDto {
 		message:
 			'La dirección debe tener entre $constraint1 y $constraint2 caracteres',
 	})
-	declare address: string;
+	address!: string;
 
 	@Transform(trim)
 	@IsNotEmpty({
 		message: 'El teléfono no puede estar vacío',
 	})
 	@IsPhoneNumber('CO', { message: 'Número de telefono inválido para Colombia' })
-	declare phone: string;
+	phone!: string;
 
 	@Transform(trimLower)
 	@IsNotEmpty({
@@ -64,5 +64,5 @@ export class CreateUserDto {
 	@IsEnum(Gender, {
 		message: 'El género debe ser uno de: ' + Object.values(Gender).join(', '),
 	})
-	declare gender: Gender;
+	gender!: Gender;
 }

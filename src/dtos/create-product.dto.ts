@@ -1,3 +1,4 @@
+import { Transform, Type } from 'class-transformer';
 import {
 	IsNotEmpty,
 	IsNumber,
@@ -7,8 +8,7 @@ import {
 	Matches,
 	Min,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
-import { trim, trimLower } from './common.dto';
+import { trim } from './common.dto';
 
 export class CreateProductDto {
 	@Transform(trim)
@@ -23,7 +23,7 @@ export class CreateProductDto {
 		message:
 			'El nombre debe de estar entre $constraint1 y $constraint2 caracteres',
 	})
-	declare name: string;
+	name!: string;
 
 	@Type(() => Number)
 	@IsNumber(
@@ -32,10 +32,13 @@ export class CreateProductDto {
 			message: 'El precio debe ser un número',
 		},
 	)
+	@IsPositive({
+		message: 'El precio debe ser positivo',
+	})
 	@Min(0.01, {
 		message: 'El precio mínimo es $constraint1',
 	})
-	declare price: number;
+	price!: number;
 
 	@Transform(trim)
 	@IsNotEmpty({
@@ -47,5 +50,5 @@ export class CreateProductDto {
 			message: 'La URL de la imagen debe ser válida',
 		},
 	)
-	declare image: string;
+	image!: string;
 }

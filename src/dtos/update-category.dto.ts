@@ -1,9 +1,15 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsUrl, Length, Matches } from 'class-validator';
+import {
+	IsNotEmpty,
+	IsOptional,
+	IsUrl,
+	Length,
+	Matches,
+} from 'class-validator';
 import { trim, trimLower } from './common.dto';
 
 export class UpdateCategoryDto {
-    @IsOptional()
+	@IsOptional()
 	@Transform(trim)
 	@IsNotEmpty({
 		message: 'La categoria no puede estar vacia',
@@ -18,7 +24,7 @@ export class UpdateCategoryDto {
 	})
 	declare name: string;
 
-    @IsOptional()
+	@IsOptional()
 	@Transform(trimLower)
 	@IsNotEmpty({
 		message: 'La imagen no puede estar vacia',

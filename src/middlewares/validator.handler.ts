@@ -11,7 +11,7 @@ export function validationHandler(dtoClass: any) {
 				whitelist: true,
 			});
 
-			console.log('resultado de la validacion:', errors)
+			console.log('resultado de la validacion:', errors);
 
 			if (errors.length > 0) {
 				const messages: string[] = errors.flatMap((error) =>

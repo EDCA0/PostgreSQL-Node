@@ -59,10 +59,6 @@ categoriesRouter.get(
 			const id = request.params.id;
 			const category = await service.findOne(id);
 
-			if (!category) {
-				throw new NotFoundError('La categoria no fue encontrada');
-			}
-
 			const apiResponse: ApiResponse<Category> = {
 				statusCode: 200,
 				success: true,

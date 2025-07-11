@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "eslint ",
-		"dev": "nodemon src/index.ts",
-		"start": "ts-node src/index.ts",
+		"dev": "nodemon api/index.ts",
+		"start": "ts-node api/index.ts",
 		"format": "prettier --write \"src/**/*.ts\" \"*.json\" \"*.md\""
 	},
 	"repository": {

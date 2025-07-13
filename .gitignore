@@ -226,4 +226,6 @@ $RECYCLE.BIN/
 #Docker
 postgres_data
 
+
+./idea
 # End of https://www.toptal.com/developers/gitignore/api/windows,node,macos,linux

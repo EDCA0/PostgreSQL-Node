@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { getConnection } from '../../libs/postgres';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import {
 	CreateUserInput,
@@ -42,16 +43,19 @@ export class UserService {
 			gender,
 		};
 
-		 this.users.push(newBody);
+		this.users.push(newBody);
 		return newBody;
 	}
 
 	async find(): Promise<User[]> {
-		return this.users;
+		const client = await getConnection();
+		const rta = await client.query('SELECT * FROM tasks');
+
+		return rta.rows;
 	}
 
 	async findOne(id: string): Promise<User> {
-		const user =  this.users.find((user) => user.id === id);
+		const user = this.users.find((user) => user.id === id);
 
 		if (!user) {
 			throw new NotFoundError('Usuario no encontrado');
@@ -61,7 +65,7 @@ export class UserService {
 	}
 
 	async updatePatch(id: string, changes: UpdateUserInput): Promise<User> {
-		const index =  this.users.findIndex((item) => item.id === id);
+		const index = this.users.findIndex((item) => item.id === id);
 
 		if (index === -1) {
 			throw new Error('No se encontro el usuario');
@@ -93,12 +97,12 @@ export class UserService {
 	}
 
 	async delete(id: string) {
-		const index =  this.users.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('No se encontro el usuario');
-		}
-
-		this.users.splice(index, 1);
+		// const index = this.users.findIndex((item) => item.id === id);
+		const client = await getConnection();
+		// if (index === -1) {
+			// throw new NotFoundError('No se encontro el usuario');
+		// }
+		const rta = await client.query(`DELETE FROM tasks WHERE id = ${id}`);
+		// this.users.splice(index, 1);
 	}
 }

@@ -122,7 +122,7 @@ productsRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string =  request.params.id;
+			const id: string = request.params.id;
 			await service.delete(id);
 
 			response.sendStatus(204);

@@ -30,7 +30,7 @@ export class ProductService {
 			image: body.image,
 		};
 
-		 this.products.push(newBody);
+		this.products.push(newBody);
 
 		return newBody;
 	}
@@ -40,7 +40,7 @@ export class ProductService {
 	}
 
 	async findOne(id: string): Promise<Product> {
-		const product =  this.products.find((product) => product.id === id);
+		const product = this.products.find((product) => product.id === id);
 
 		if (!product) {
 			throw new NotFoundError('Product not found');
@@ -50,7 +50,7 @@ export class ProductService {
 	}
 
 	async updatePatch(id: string, body: UpdateProductInput): Promise<Product> {
-		const index =  this.products.findIndex((item) => item.id === id);
+		const index = this.products.findIndex((item) => item.id === id);
 
 		if (index === -1) {
 			throw new NotFoundError('Product not found');
@@ -65,7 +65,7 @@ export class ProductService {
 	}
 
 	async updatePut(id: string, body: UpdateProductInput): Promise<Product> {
-		const index =  this.products.findIndex((item) => item.id === id);
+		const index = this.products.findIndex((item) => item.id === id);
 
 		if (index === -1) {
 			throw new NotFoundError('Product not found');
@@ -86,6 +86,6 @@ export class ProductService {
 			throw new NotFoundError('Product not found');
 		}
 
-		 this.products.splice(index, 1);
+		this.products.splice(index, 1);
 	}
 }

@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import { getConnection } from '../../libs/postgres';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import {
 	CreateUserInput,
@@ -48,10 +47,7 @@ export class UserService {
 	}
 
 	async find(): Promise<User[]> {
-		const client = await getConnection();
-		const rta = await client.query('SELECT * FROM tasks');
-
-		return rta.rows;
+		return this.users
 	}
 
 	async findOne(id: string): Promise<User> {
@@ -97,12 +93,10 @@ export class UserService {
 	}
 
 	async delete(id: string) {
-		// const index = this.users.findIndex((item) => item.id === id);
-		const client = await getConnection();
-		// if (index === -1) {
-			// throw new NotFoundError('No se encontro el usuario');
-		// }
-		const rta = await client.query(`DELETE FROM tasks WHERE id = ${id}`);
-		// this.users.splice(index, 1);
+		const index = this.users.findIndex((item) => item.id === id);
+		if (index === -1) {
+			throw new NotFoundError('No se encontro el usuario');
+		}
+		this.users.splice(index, 1);
 	}
 }

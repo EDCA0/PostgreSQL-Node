@@ -3,6 +3,7 @@ import { CreateProductDto } from '../dtos';
 import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
 
+
 export class ProductService {
 	protected products: Product[] = [];
 	constructor() {

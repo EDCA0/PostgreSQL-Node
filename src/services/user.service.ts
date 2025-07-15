@@ -47,7 +47,7 @@ export class UserService {
 	}
 
 	async find(): Promise<User[]> {
-		return this.users
+		return this.users;
 	}
 
 	async findOne(id: string): Promise<User> {

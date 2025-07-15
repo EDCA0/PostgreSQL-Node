@@ -1,10 +1,10 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos';
+import { Tasks } from '../entity/tasks';
 import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse, Product } from '../models';
 import { ProductService } from '../services/product.service';
-import { NotFoundError } from '../utils/httpErrors';
 
 export const productsRouter: Router = express.Router();
 const service = new ProductService();
@@ -36,8 +36,8 @@ productsRouter.get(
 	'/',
 	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
-			const products = await service.find();
-			const apiResponse: ApiResponse<Product[]> = {
+			const products: Tasks[] = await service.find();
+			const apiResponse: ApiResponse<Tasks[]> = {
 				success: true,
 				statusCode: 200,
 				data: products,

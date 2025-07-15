@@ -10,3 +10,6 @@ node_modules
 #Carpetas de compilacion
 dist
 build
+
+#Carpetas de migraciones
+migrations

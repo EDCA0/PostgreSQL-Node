@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { CreateProductDto } from '../dtos';
 import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
-
+import { Tasks } from '../entity/tasks';
 
 export class ProductService {
 	protected products: Product[] = [];
@@ -36,8 +36,10 @@ export class ProductService {
 		return newBody;
 	}
 
-	async find(): Promise<Product[]> {
-		return this.products;
+	async find() {
+		// return this.products;
+		const tasks = await Tasks.find();
+		return tasks;
 	}
 
 	async findOne(id: string): Promise<Product> {

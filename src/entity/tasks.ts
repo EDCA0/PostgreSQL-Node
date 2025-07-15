@@ -1,23 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity('tasks')
-export class Tasks extends BaseEntity{
+export class Tasks extends BaseEntity {
+	@PrimaryGeneratedColumn()
+	declare id: number;
 
-    @PrimaryGeneratedColumn()
-    declare id: number
+	@Column({
+		type: 'varchar',
+		length: 255,
+		nullable: false,
+		comment: 'Titulo prueba',
+	})
+	declare title: string;
 
-    @Column({
-        type: 'varchar',
-        length: 255,
-        nullable : false,
-        comment: 'Titulo prueba'
-    })
-    declare title: string
-
-    @Column({
-        type: 'boolean',
-        nullable: false,
-        default: false
-    })
-    declare completed: boolean
+	@Column({
+		type: 'boolean',
+		nullable: false,
+		default: false,
+	})
+	declare completed: boolean;
 }

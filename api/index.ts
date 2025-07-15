@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import app from "./app";
 import { AppDataSource } from "../src/data-source"
 
@@ -7,8 +8,8 @@ async function main () {
         await AppDataSource.initialize();
         console.log('Base de datos conectada correctamente');
 
-        const port : Number = 5555
-
+        const port : Number = Number(process.env.PORT) || 3000
+        
         app.listen(port, () => {
             console.log('Servidor escuchando en el puerto ', port)
         })

@@ -2,10 +2,10 @@ services:
   postgres:
     image: postgres:13
     environment:
-      - POSTGRES_DB=my_store
-      - POSTGRES_USER=edca
-      - POSTGRES_PASSWORD=admin1234
+      POSTGRES_DB: ${dbName}
+      POSTGRES_USER: ${dbUser}
+      POSTGRES_PASSWORD: ${dbPassword}
     ports:
-      - 5555:5432
+      - ${dbPort}:5432
     volumes:
       - ./postgres_data:/var/lib/postgresql/data

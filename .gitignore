@@ -227,5 +227,5 @@ $RECYCLE.BIN/
 postgres_data
 
 
-./idea
+.idea
 # End of https://www.toptal.com/developers/gitignore/api/windows,node,macos,linux

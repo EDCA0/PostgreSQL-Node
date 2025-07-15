@@ -1,47 +1,49 @@
 {
-   "name": "fundamentals",
-   "version": "1.0.0",
-   "description": "",
-   "main": "index.js",
-   "scripts": {
-      "dev": "nodemon api/index.ts",
-      "start": "ts-node src/index.ts",
-      "format": "prettier --write \"src/**/*.ts\" \"*.json\" \"*.md\"",
-      "typeorm": "ts-node ./node_modules/typeorm/cli.js -d ./src/data-source.ts",
-	  "migration:generate": "npm run typeorm -- migration:generate",
-	  "migration:run": "npm run typeorm -- migration:run",
-	  "migration:revert": "npm run typeorm -- migration:revert"
-   },
-   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/EDCA0/ExpressJsFundamentals.git"
-   },
-   "keywords": [],
-   "author": "EDCA<eric.cavanzo@outlook.com>",
-   "license": "ISC",
-   "type": "commonjs",
-   "bugs": {
-      "url": "https://github.com/EDCA0/ExpressJsFundamentals/issues"
-   },
-   "homepage": "https://github.com/EDCA0/ExpressJsFundamentals#readme",
-   "devDependencies": {
-      "@types/node": "^24.0.13",
-      "ts-node": "^10.9.2",
-      "typescript": "^5.8.3",
-      "@faker-js/faker": "^9.8.0",
-      "@types/cors": "^2.8.19",
-      "@types/express": "^5.0.3",
-      "@types/pg": "^8.15.4",
-      "nodemon": "^3.1.10",
-      "prettier": "3.6.2"
-   },
-   "dependencies": {
-      "class-transformer": "^0.5.1",
-      "class-validator": "^0.14.2",
-      "cors": "^2.8.5",
-      "express": "^5.1.0",
-      "pg": "^8.16.3",
-      "reflect-metadata": "^0.2.2",
-      "typeorm": "0.3.25"
-   }
+	"name": "fundamentals",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon api/index.ts",
+		"start": "ts-node src/index.ts",
+		"format": "prettier --write \"src/**/*.ts\" \"*.json\" \"*.md\"",
+		"typeorm": "ts-node ./node_modules/typeorm/cli.js -d ./src/data-source.ts",
+		"migration:generate": "npm run typeorm -- migration:generate",
+		"migration:run": "npm run typeorm -- migration:run",
+		"migration:revert": "npm run typeorm -- migration:revert"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/EDCA0/ExpressJsFundamentals.git"
+	},
+	"keywords": [],
+	"author": "EDCA<eric.cavanzo@outlook.com>",
+	"license": "ISC",
+	"type": "commonjs",
+	"bugs": {
+		"url": "https://github.com/EDCA0/ExpressJsFundamentals/issues"
+	},
+	"homepage": "https://github.com/EDCA0/ExpressJsFundamentals#readme",
+	"devDependencies": {
+		"@faker-js/faker": "^9.8.0",
+		"@types/cors": "^2.8.19",
+		"@types/dotenv": "^6.1.1",
+		"@types/express": "^5.0.3",
+		"@types/node": "^24.0.13",
+		"@types/pg": "^8.15.4",
+		"nodemon": "^3.1.10",
+		"prettier": "3.6.2",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.14.2",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.0",
+		"express": "^5.1.0",
+		"pg": "^8.16.3",
+		"reflect-metadata": "^0.2.2",
+		"typeorm": "0.3.25"
+	}
 }

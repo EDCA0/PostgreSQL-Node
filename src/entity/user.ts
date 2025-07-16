@@ -1,0 +1,74 @@
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Gender } from '../models';
+
+@Entity('users')
+export class Users extends BaseEntity {
+	@PrimaryGeneratedColumn({
+		name: 'user_id',
+		comment: 'id del usuario, generado automaticamente, es unico por usuario',
+	})
+	declare id: number;
+
+	@Column({
+		name: 'user_name',
+		type: 'varchar',
+		length: 60,
+		nullable: false,
+		comment: 'nombre del usuario',
+	})
+	declare userName: string;
+
+	@Column({
+		name: 'user_email',
+		type: 'varchar',
+		length: 200,
+		unique: true,
+		nullable: false,
+		comment: 'Correo del usuario, es unico',
+	})
+	declare userEmail: string;
+
+	@Column({
+		name: 'user_password',
+		type: 'varchar',
+		length: 100,
+		nullable: false,
+		comment: 'contraseña del usuario',
+	})
+	declare userPassword: string;
+
+	@Column({
+		name: 'user_address',
+		type: 'varchar',
+		length: 100,
+		nullable: false,
+		comment: 'Direccion del usuario',
+	})
+	declare userAddress: string;
+
+	@Column({
+		name: 'user_phone_number',
+		type: 'varchar',
+		length: 30,
+		nullable: false,
+		comment: 'Numero de telefono del usuario',
+	})
+	declare phone: string;
+
+	@Column({
+		name: 'user_gender',
+		nullable: false,
+		enum: Gender,
+	})
+	declare userGender: Gender;
+
+	@Column({
+		name: 'created_at',
+		type: 'timestamp',
+		update: false,
+		nullable: false,
+		default: () => 'CURRENT_TIMESTAMP',
+		comment: 'Fecha y hora de creacion del usuario',
+	})
+	declare createdAt: Date;
+}

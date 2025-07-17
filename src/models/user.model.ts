@@ -5,13 +5,14 @@ export enum Gender {
 }
 
 export interface User {
-	readonly id: string;
-	name: string;
-	email: string;
-	password: string;
-	address: string;
+	readonly id: number;
+	userName: string;
+	userEmail: string;
+	userPassword: string;
+	userAddress: string;
 	phone: string;
-	gender: Gender;
+	userGender: Gender;
+	createdAt: Date;
 }
 
 export type CreateUserInput = Omit<User, 'id'>;

@@ -1,57 +1,41 @@
-import { faker } from '@faker-js/faker';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import {
-	CreateUserInput,
-	Gender,
-	UpdateUserInput,
-	User,
-} from '../models/user.model';
-import { NotFoundError } from '../utils/httpErrors';
-
-const GENDERS: Gender[] = [Gender.MALE, Gender.FEMALE, Gender.OTHER];
+import { Users } from '../entity/user';
+import { CreateUserInput, UpdateUserInput, User } from '../models/user.model';
+import { BadRequestError, ConflictError, NotFoundError } from '../utils/httpErrors';
 
 export class UserService {
-	protected users: User[] = [];
-	constructor() {
-		this.generate();
-	}
-
-	generate() {
-		const limit: number = 100;
-
-		for (let index = 0; index < limit; index++) {
-			this.users.push({
-				id: faker.string.uuid(),
-				name: faker.person.fullName(),
-				email: faker.internet.email(),
-				address: faker.location.street(),
-				phone: faker.phone.number(),
-				gender: faker.helpers.arrayElement(GENDERS),
-			});
-		}
-	}
+	constructor() {}
 
 	async create(body: CreateUserDto): Promise<User> {
-		const { name, email, address, phone, gender } = body;
-		const newBody = {
-			id: faker.string.uuid(),
-			name,
-			email,
-			address,
-			phone,
-			gender,
-		};
+		const exist = await Users.findOneBy({
+			userEmail: body.userEmail,
+		});
 
-		this.users.push(newBody);
-		return newBody;
+		if (exist) {
+			throw new ConflictError(
+				`correo existente en la base de datos: ${body.userEmail}`,
+			);
+		}
+
+		const newUser = new Users();
+
+		Object.assign(newUser, body);
+
+		await newUser.save();
+		return newUser;
 	}
 
 	async find(): Promise<User[]> {
-		return this.users;
+		const users: User[] = await Users.find();
+		return users;
 	}
 
-	async findOne(id: string): Promise<User> {
-		const user = this.users.find((user) => user.id === id);
+	async findOne(id: number): Promise<User> {
+		const user = await Users.findOne({
+			where: {
+				id: id,
+			},
+		});
 
 		if (!user) {
 			throw new NotFoundError('Usuario no encontrado');
@@ -61,42 +45,32 @@ export class UserService {
 	}
 
 	async updatePatch(id: string, changes: UpdateUserInput): Promise<User> {
-		const index = this.users.findIndex((item) => item.id === id);
+		const userId = Number(id);
 
-		if (index === -1) {
-			throw new Error('No se encontro el usuario');
+		if (isNaN(userId)) {
+			throw new BadRequestError('ID de usuario inválido.');
 		}
 
-		const user = this.users[index];
-		this.users[index] = {
-			...user,
-			...changes,
-		};
+		await Users.update(id, {
+			userName: changes.userName,
+			userEmail: changes.userEmail,
+			userPassword: changes.userPassword,
+			userAddress: changes.userAddress,
+			phone: changes.phone,
+			userGender: changes.userGender,
+		});
 
-		return this.users[index];
+		return this.findOne(userId);
 	}
 
-	async updatePut(id: string, changes: CreateUserInput): Promise<User> {
-		const index = this.users.findIndex((item) => item.id === id);
+	async updatePut(id: number, changes: CreateUserInput): Promise<User> {
+		await Users.update(id, changes);
 
-		if (index === -1) {
-			throw new NotFoundError('No se encontro el usuario');
-		}
-
-		const user = this.users[index];
-		this.users[index] = {
-			...user,
-			...changes,
-		};
-
-		return this.users[index];
+		return this.findOne(id);
 	}
 
-	async delete(id: string) {
-		const index = this.users.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new NotFoundError('No se encontro el usuario');
-		}
-		this.users.splice(index, 1);
+	async delete(id: number) {
+		await this.findOne(id);
+		await Users.delete(id);
 	}
 }

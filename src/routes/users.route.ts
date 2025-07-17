@@ -1,10 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
-import {
-	CreateProductDto,
-	CreateUserDto,
-	UpdateProductDto,
-	UpdateUserDto,
-} from '../dtos';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse, User } from '../models';
 import { UserService } from '../services/user.service';
@@ -17,12 +12,15 @@ usersRouter.post(
 	validationHandler(CreateUserDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const body = await service.create(request.body);
+			const body: User = request.body;
+			const newUser: User = await service.create(body);
+
+			Object.assign(newUser, body);
 
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 201,
-				data: body,
+				data: newUser,
 			};
 
 			response.status(201).json(responseApi);
@@ -36,7 +34,7 @@ usersRouter.get(
 	'/',
 	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
-			const users = await service.find();
+			const users: User[] = await service.find();
 
 			const responseApi: ApiResponse<User[]> = {
 				success: true,
@@ -55,7 +53,8 @@ usersRouter.get(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const userId: string = request.params.id;
+			const userId: number = Number(request.params.id);
+
 			const user: User = await service.findOne(userId);
 
 			const responseApi: ApiResponse<User> = {
@@ -99,7 +98,7 @@ usersRouter.put(
 	validationHandler(CreateUserDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			const body = request.body;
 
 			const update = await service.updatePut(id, body);
@@ -120,7 +119,7 @@ usersRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			await service.delete(id);
 			response.sendStatus(204);
 		} catch (error) {

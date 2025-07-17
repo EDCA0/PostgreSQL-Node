@@ -30,3 +30,8 @@ export class BadRequestError extends HttpError {
 		super(message, 400);
 	}
 }
+export class ConflictError extends HttpError {
+	constructor(message: string | string[] = 'Conflicto: El recurso ya existe.') {
+		super(message, 409);
+	}
+}

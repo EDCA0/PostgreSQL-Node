@@ -5,6 +5,8 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsPhoneNumber,
+	IsString,
+	IsStrongPassword,
 	Length,
 	Matches,
 } from 'class-validator';
@@ -25,7 +27,7 @@ export class UpdateUserDto {
 		message:
 			'El nombre debe de estar entre $constraint1 y $constraint2 caracteres',
 	})
-	name!: string;
+	declare userName: string;
 
 	@IsOptional()
 	@Transform(trimLower)
@@ -38,7 +40,26 @@ export class UpdateUserDto {
 			message: 'Debe ser un email válido',
 		},
 	)
-	email!: string;
+	declare userEmail: string;
+
+	@IsOptional()
+	@IsString({
+		message: 'La contraseña debe ser texto',
+	})
+	@IsNotEmpty({
+		message: 'La contraseña no puede estar vacia',
+	})
+	@IsStrongPassword(
+		{},
+		{
+			message:
+				'La contraseña no cumple con los requisitos mínimos de seguridad (mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un símbolo).',
+		},
+	)
+	@Length(8, 100, {
+		message: 'La contraseña debe estar entre $constraint1 y $constraint2',
+	})
+	declare userPassword: string;
 
 	@IsOptional()
 	@Transform(trim)
@@ -52,7 +73,7 @@ export class UpdateUserDto {
 		message:
 			'La dirección debe tener entre $constraint1 y $constraint2 caracteres',
 	})
-	address!: string;
+	declare userAddress: string;
 
 	@IsOptional()
 	@Transform(trim)
@@ -60,7 +81,7 @@ export class UpdateUserDto {
 		message: 'El teléfono no puede estar vacío',
 	})
 	@IsPhoneNumber('CO', { message: 'Número de telefono inválido para Colombia' })
-	phone!: string;
+	declare phone: string;
 
 	@IsOptional()
 	@Transform(trimLower)
@@ -70,5 +91,5 @@ export class UpdateUserDto {
 	@IsEnum(Gender, {
 		message: 'El género debe ser uno de: ' + Object.values(Gender).join(', '),
 	})
-	gender!: Gender;
+	declare userGender: Gender;
 }

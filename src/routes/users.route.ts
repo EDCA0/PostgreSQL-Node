@@ -15,8 +15,6 @@ usersRouter.post(
 			const body: User = request.body;
 			const newUser: User = await service.create(body);
 
-			Object.assign(newUser, body);
-
 			const responseApi: ApiResponse<User> = {
 				success: true,
 				statusCode: 201,

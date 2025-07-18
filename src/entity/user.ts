@@ -63,6 +63,14 @@ export class Users extends BaseEntity {
 	declare userGender: Gender;
 
 	@Column({
+		name: 'user_role',
+		nullable: false,
+		type: 'varchar',
+		default: 'customer',
+	})
+	declare userRole: string;
+
+	@Column({
 		name: 'created_at',
 		type: 'timestamp',
 		update: false,

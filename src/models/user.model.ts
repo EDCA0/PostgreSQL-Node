@@ -12,6 +12,7 @@ export interface User {
 	userAddress: string;
 	phone: string;
 	userGender: Gender;
+	userRole: string;
 	createdAt: Date;
 }
 

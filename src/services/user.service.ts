@@ -1,7 +1,11 @@
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { Users } from '../entity/user';
 import { CreateUserInput, UpdateUserInput, User } from '../models/user.model';
-import { BadRequestError, ConflictError, NotFoundError } from '../utils/httpErrors';
+import {
+	BadRequestError,
+	ConflictError,
+	NotFoundError,
+} from '../utils/httpErrors';
 
 export class UserService {
 	constructor() {}

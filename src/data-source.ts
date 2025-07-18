@@ -1,8 +1,7 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Tasks } from './entity/tasks';
-import { Users } from './entity/user';
+import { Tasks, Users, Customers } from './entity';
 
 const DB_USER = encodeURIComponent(process.env.dbUser || 'edca');
 const DB_PASSWORD = encodeURIComponent(process.env.dbPassword || 'admin1234');
@@ -17,7 +16,7 @@ export const dataSourceOptions: DataSourceOptions = {
 	url: DATABASE_URL,
 	synchronize: false,
 	logging: true,
-	entities: [Tasks, Users],
+	entities: [Tasks, Users, Customers],
 	migrations: ['src/migrations/*.ts'],
 	subscribers: [],
 };

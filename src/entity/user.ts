@@ -1,5 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	BaseEntity,
+	Column,
+	Entity,
+	OneToMany,
+	OneToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Gender } from '../models';
+import { Customers } from './customer';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -69,6 +77,9 @@ export class Users extends BaseEntity {
 		default: 'customer',
 	})
 	declare userRole: string;
+
+	@OneToOne(() => Customers, (customer) => customer.userId)
+	declare customer: Customers;
 
 	@Column({
 		name: 'created_at',

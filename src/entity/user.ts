@@ -78,7 +78,7 @@ export class Users extends BaseEntity {
 	})
 	declare userRole: string;
 
-	@OneToOne(() => Customers, (customer) => customer.userId)
+	@OneToOne(() => Customers, (customer) => customer.user)
 	declare customer: Customers;
 
 	@Column({

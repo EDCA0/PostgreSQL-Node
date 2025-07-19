@@ -50,5 +50,5 @@ export class CreateCustomerDto {
 	@IsPositive({
 		message: 'El userId debe ser un numero positivo',
 	})
-	declare userId: Users;
+	declare user: Users;
 }

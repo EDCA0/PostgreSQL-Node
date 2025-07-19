@@ -6,26 +6,26 @@ import { ConflictError, NotFoundError } from '../utils/httpErrors';
 
 export class CustomerService {
 	async create(body: CreateCustomerDto): Promise<CustomerInput> {
-		const userId = await Users.findOne({
+		const user = await Users.findOne({
 			where: {
-				id: Number(body.userId),
+				id: Number(body.user),
 			},
 		});
 
-		if (!userId) {
+		if (!user) {
 			throw new NotFoundError('Id del usuario no encontrado');
 		}
 
-		const existingCustomer = await Customers.findOne({
-			where: {
-				userId: body.userId,
+		const existingCustomer = await Customers.findOneBy({
+			user: {
+				id: Number(body.user),
 			},
 		});
 
 		if (existingCustomer) {
-			// Si ya existe un cliente para este userId, lanzamos un ConflictError
+			// Si ya existe un cliente para este user, lanzamos un ConflictError
 			throw new ConflictError(
-				`Ya existe un cliente asociado al usuario con ID ${body.userId}.`,
+				`Ya existe un cliente asociado al usuario con ID ${body.user}.`,
 			);
 		}
 
@@ -37,7 +37,11 @@ export class CustomerService {
 	}
 
 	async find(): Promise<CustomerInput[]> {
-		const customers: CustomerInput[] = await Customers.find();
+		const customers: CustomerInput[] = await Customers.find({
+			relations: {
+				user: true,
+			},
+		});
 		return customers;
 	}
 
@@ -45,6 +49,9 @@ export class CustomerService {
 		const customer = await Customers.findOne({
 			where: {
 				id: id,
+			},
+			relations: {
+				user: true,
 			},
 		});
 

@@ -40,7 +40,7 @@ export class Customers extends BaseEntity {
 	@JoinColumn({
 		name: 'userId',
 	})
-	declare userId: Users;
+	declare user: Users;
 
 	@Column({
 		name: 'createdAt',

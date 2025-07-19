@@ -30,7 +30,11 @@ export class UserService {
 	}
 
 	async find(): Promise<User[]> {
-		const users: User[] = await Users.find();
+		const users: User[] = await Users.find({
+			relations: {
+				customer: true,
+			},
+		});
 		return users;
 	}
 
@@ -38,6 +42,9 @@ export class UserService {
 		const user = await Users.findOne({
 			where: {
 				id: id,
+			},
+			relations: {
+				customer: true,
 			},
 		});
 

@@ -4,7 +4,7 @@ export interface CustomerInput {
 	readonly id: Number;
 	customerName: string;
 	customerLastName: string;
-	userId: Users;
+	user: Users;
 	customerPhone: string;
 	createdAt: Date;
 	updatedAt: Date;

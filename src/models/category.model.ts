@@ -1,8 +1,10 @@
-export interface Category {
+export interface CategoryInput {
 	readonly id: number | string;
-	name: string;
-	image: string;
+	categoryName: string;
+	categoryImage: string;
+	createdAt : Date;
+	updatedAt : Date;
 }
 
-export type CategoryPut = Omit<Category, 'id'>;
-export type CategoryPatch = Partial<CategoryPut>;
+export type CreateCategoryInput = Omit<CategoryInput, 'id'>;
+export type UpdateCategoryInput = Partial<CreateCategoryInput>;

@@ -15,12 +15,12 @@ export class CreateCategoryDto {
 		message:
 			'El nombre solo puede estar entre un rango de $constraint1 y $constraint2',
 	})
-	declare name: string;
+	declare categoryName: string;
 
 	@Transform(trimLower)
 	@IsNotEmpty({
 		message: 'La imagen no puede estar vacia',
 	})
 	@IsUrl()
-	declare image: string;
+	declare categoryImage: string;
 }

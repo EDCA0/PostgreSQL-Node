@@ -1,22 +1,19 @@
 import { Transform, Type } from 'class-transformer';
 import {
-	IsNotEmpty,
 	IsNumber,
 	IsOptional,
 	IsPositive,
+	IsString,
 	IsUrl,
 	Length,
 	Matches,
-	Min,
+	Min
 } from 'class-validator';
 import { trim } from './common.dto';
 
 export class UpdateProductDto {
 	@IsOptional()
 	@Transform(trim)
-	@IsNotEmpty({
-		message: 'El nombre no puede estar vacío',
-	})
 	@Matches(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s'-]+$/, {
 		message:
 			'El nombre solo puede contener letras, espacios, apóstrofes y guiones',
@@ -25,7 +22,7 @@ export class UpdateProductDto {
 		message:
 			'El nombre debe de estar entre $constraint1 y $constraint2 caracteres',
 	})
-	name!: string;
+	declare productName: string;
 
 	@IsOptional()
 	@Type(() => Number)
@@ -41,18 +38,25 @@ export class UpdateProductDto {
 	@Min(0.01, {
 		message: 'El precio mínimo es $constraint1',
 	})
-	price!: number;
+	declare productPrice: number;
 
 	@IsOptional()
 	@Transform(trim)
-	@IsNotEmpty({
-		message: 'La URL de la imagen no puede estar vacía',
+	@IsString({
+		message: 'La descripcion debe ser un texto',
 	})
+	@Length(5, 150, {
+		message: 'La descripcion debe estar entre $constraint1 y $constraint2',
+	})
+	declare productDescription: string;
+
+	@IsOptional()
+	@Transform(trim)
 	@IsUrl(
 		{},
 		{
 			message: 'La URL de la imagen debe ser válida',
 		},
 	)
-	image!: string;
+	declare productImage: string;
 }

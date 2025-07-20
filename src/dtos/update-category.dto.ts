@@ -1,19 +1,15 @@
 import { Transform } from 'class-transformer';
 import {
-	IsNotEmpty,
 	IsOptional,
 	IsUrl,
 	Length,
-	Matches,
+	Matches
 } from 'class-validator';
 import { trim, trimLower } from './common.dto';
 
 export class UpdateCategoryDto {
 	@IsOptional()
 	@Transform(trim)
-	@IsNotEmpty({
-		message: 'La categoria no puede estar vacia',
-	})
 	@Matches(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s'-]+$/, {
 		message:
 			'El nombre solo puede contener letras, espacios, apóstrofes y guiones',
@@ -22,13 +18,10 @@ export class UpdateCategoryDto {
 		message:
 			'El nombre solo puede estar entre un rango de $constraint1 y $constraint2',
 	})
-	declare name: string;
+	declare categoryName: string;
 
 	@IsOptional()
 	@Transform(trimLower)
-	@IsNotEmpty({
-		message: 'La imagen no puede estar vacia',
-	})
 	@IsUrl()
-	declare image: string;
+	declare categoryImage: string;
 }

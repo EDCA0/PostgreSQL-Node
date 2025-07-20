@@ -10,5 +10,5 @@ export interface CustomerInput {
 	updatedAt: Date;
 }
 
-export type CreateCustomerInput = Omit<CustomerInput, 'id' | 'updatedAt'>;
+export type CreateCustomerInput = Omit<CustomerInput, 'id'>;
 export type UpdateCustomerInput = Partial<CreateCustomerInput>;

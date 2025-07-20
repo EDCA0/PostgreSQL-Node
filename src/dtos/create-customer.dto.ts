@@ -1,5 +1,4 @@
 import { Transform } from 'class-transformer';
-import { trim } from './common.dto';
 import {
 	IsInt,
 	IsNotEmpty,
@@ -8,6 +7,7 @@ import {
 	Length,
 } from 'class-validator';
 import { Users } from '../entity';
+import { trim } from './common.dto';
 
 export class CreateCustomerDto {
 	@Transform(trim)

@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
 
 export const inicioRouter: Router = express.Router();
 

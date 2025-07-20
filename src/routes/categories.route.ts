@@ -1,10 +1,9 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 
-import { validationHandler } from '../middlewares/validator.handler';
-import { CategoryService } from '../services/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
-import { ApiResponse, Category } from '../models';
-import { NotFoundError } from '../utils/httpErrors';
+import { validationHandler } from '../middlewares/validator.handler';
+import { ApiResponse, CategoryInput } from '../models';
+import { CategoryService } from '../services/category.service';
 
 export const categoriesRouter: Router = express.Router();
 const service = new CategoryService();
@@ -18,7 +17,7 @@ categoriesRouter.post(
 			const body: CreateCategoryDto = request.body;
 			const newCategory = await service.create(body);
 
-			const apiResponse: ApiResponse<Category> = {
+			const apiResponse: ApiResponse<CategoryInput> = {
 				statusCode: 201,
 				success: true,
 				data: newCategory,
@@ -36,9 +35,9 @@ categoriesRouter.get(
 	'/',
 	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
-			const categories: Category[] = await service.find();
+			const categories: CategoryInput[] = await service.find();
 
-			const apiResponse: ApiResponse<Category[]> = {
+			const apiResponse: ApiResponse<CategoryInput[]> = {
 				success: true,
 				statusCode: 200,
 				data: categories,
@@ -56,10 +55,10 @@ categoriesRouter.get(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id = request.params.id;
+			const id = Number(request.params.id);
 			const category = await service.findOne(id);
 
-			const apiResponse: ApiResponse<Category> = {
+			const apiResponse: ApiResponse<CategoryInput> = {
 				statusCode: 200,
 				success: true,
 				data: category,
@@ -72,40 +71,17 @@ categoriesRouter.get(
 	},
 );
 
-// PATCH (actualizacion parcial por ID)
-categoriesRouter.patch(
+// PUT (actualizacion total por ID)
+categoriesRouter.put(
 	'/:id',
 	validationHandler(UpdateCategoryDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
-			const body: UpdateCategoryDto = request.body;
-			const updatedCategory = await service.updatePatch(id, body);
+			const id: number = Number(request.params.id);
+			const body = request.body;
+			const updatedCategory = await service.update(id, body);
 
-			const apiResponse: ApiResponse<Category> = {
-				success: true,
-				statusCode: 200,
-				data: updatedCategory,
-			};
-
-			response.status(200).json(apiResponse);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
-
-// PUT (actualizacion total por ID)
-categoriesRouter.put(
-	'/:id',
-	validationHandler(CreateCategoryDto),
-	async (request: Request, response: Response, next: NextFunction) => {
-		try {
-			const id: string = request.params.id;
-			const body: CreateCategoryDto = request.body;
-			const updatedCategory = await service.updatePut(id, body);
-
-			const apiResponse: ApiResponse<Category> = {
+			const apiResponse: ApiResponse<CategoryInput> = {
 				success: true,
 				statusCode: 200,
 				data: updatedCategory,
@@ -122,7 +98,7 @@ categoriesRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			await service.delete(id);
 
 			response.sendStatus(204);

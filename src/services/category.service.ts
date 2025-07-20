@@ -1,81 +1,53 @@
 import { CreateCategoryDto } from '../dtos/create-category.dto';
-import { CategoryPatch, CategoryPut, Category } from '../models';
-import { faker } from '@faker-js/faker';
+import { Categories } from '../entity';
+import { CategoryInput, UpdateCategoryInput, CreateCategoryInput } from '../models';
 import { NotFoundError } from '../utils/httpErrors';
 
 export class CategoryService {
-	protected categories: Category[] = [];
+	protected categories: CategoryInput[] = [];
 
 	constructor() {}
 
 	// POST (crear categoria)
-	async create(body: CreateCategoryDto): Promise<Category> {
-		const newBody: Category = {
-			id: faker.string.uuid(),
-			name: body.name,
-			image: body.image,
-		};
+	async create(body: CreateCategoryDto): Promise<CategoryInput> {
+		const newCategory = new Categories();
 
-		this.categories.push(newBody);
-		return newBody;
+		Object.assign(newCategory, body);
+		await newCategory.save();
+		return newCategory;
 	}
 
 	//  GET (Traer todos)
-	async find(): Promise<Category[]> {
-		return this.categories;
+	async find(): Promise<CategoryInput[]> {
+		const categories : CategoryInput[] = await Categories.find();
+
+		return categories;
 	}
 
 	// GET (Traer uno por ID)
-	async findOne(id: number | string): Promise<Category> {
-		const category = this.categories.find((item) => item.id === id);
+	async findOne(id: number): Promise<CategoryInput> {
+		const category = await Categories.findOne({
+			where: {
+				id: id
+			}
+		})
 
-		if (!category) {
-			throw new NotFoundError('Category not found');
+		if(!category) {
+			throw new NotFoundError('Category no encontrado')
 		}
 
-		return category;
+		return category
 	}
 
-	// PATCH (Actualizacion parcial por ID)
-	async updatePatch(id: string | number, body: CategoryPatch) {
-		const index = this.categories.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('Category not found');
-		}
-
-		this.categories[index] = {
-			...this.categories[index],
-			...body,
-		};
-
-		return this.categories[index];
-	}
-
-	// PUT (Actualizacion total por ID)
-	async updatePut(id: string | number, body: CategoryPut) {
-		const index = this.categories.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('Category not found');
-		}
-
-		this.categories[index] = {
-			id: this.categories[index].id,
-			...body,
-		};
-
-		return this.categories[index];
+	async update(id: number, changes: CreateCategoryInput) : Promise<CategoryInput> {
+		await this.findOne(id)
+		await Categories.update(id, changes);
+		return this.findOne(id)
 	}
 
 	// DELETE (Eliminacion por ID)
-	async delete(id: string | number): Promise<void> {
-		const index = this.categories.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('Category not found');
-		}
-
-		this.categories.splice(index, 1);
+	async delete(id: number): Promise<void> {
+		await this.findOne(id);
+		await Categories.delete(id);
 	}
 }

@@ -1,6 +1,10 @@
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { Categories } from '../entity';
-import { CategoryInput, UpdateCategoryInput, CreateCategoryInput } from '../models';
+import {
+	CategoryInput,
+	UpdateCategoryInput,
+	CreateCategoryInput,
+} from '../models';
 import { NotFoundError } from '../utils/httpErrors';
 
 export class CategoryService {
@@ -19,7 +23,11 @@ export class CategoryService {
 
 	//  GET (Traer todos)
 	async find(): Promise<CategoryInput[]> {
-		const categories : CategoryInput[] = await Categories.find();
+		const categories: CategoryInput[] = await Categories.find({
+			relations: {
+				products: true,
+			},
+		});
 
 		return categories;
 	}
@@ -28,21 +36,27 @@ export class CategoryService {
 	async findOne(id: number): Promise<CategoryInput> {
 		const category = await Categories.findOne({
 			where: {
-				id: id
-			}
-		})
+				id: id,
+			},
+			relations: {
+				products: true,
+			},
+		});
 
-		if(!category) {
-			throw new NotFoundError('Category no encontrado')
+		if (!category) {
+			throw new NotFoundError('Category no encontrado');
 		}
 
-		return category
+		return category;
 	}
 
-	async update(id: number, changes: CreateCategoryInput) : Promise<CategoryInput> {
-		await this.findOne(id)
+	async update(
+		id: number,
+		changes: CreateCategoryInput,
+	): Promise<CategoryInput> {
+		await this.findOne(id);
 		await Categories.update(id, changes);
-		return this.findOne(id)
+		return this.findOne(id);
 	}
 
 	// DELETE (Eliminacion por ID)

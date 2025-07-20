@@ -10,14 +10,18 @@ export class ProductService {
 	async create(body: CreateProductDto): Promise<Product> {
 		const newProduct = new Products();
 
-		Object.assign(newProduct, body)
+		Object.assign(newProduct, body);
 
-		await newProduct.save()
-		return newProduct
+		await newProduct.save();
+		return newProduct;
 	}
 
-	async find() : Promise<Product[]>{
-		const products: Product[] = await Products.find()
+	async find(): Promise<Product[]> {
+		const products: Product[] = await Products.find({
+			relations: {
+				category: true,
+			},
+		});
 
 		return products;
 	}
@@ -25,9 +29,12 @@ export class ProductService {
 	async findOne(id: number): Promise<Product> {
 		const product = await Products.findOne({
 			where: {
-				id : id
-			}
-		})
+				id: id,
+			},
+			relations: {
+				category: true,
+			},
+		});
 
 		if (!product) {
 			throw new NotFoundError('Product not found');
@@ -37,11 +44,11 @@ export class ProductService {
 	}
 
 	async update(id: number, changes: UpdateProductInput): Promise<Product> {
-		await this.findOne(id)
-		
+		await this.findOne(id);
+
 		await Products.update(id, changes);
 
-		return this.findOne(id)
+		return this.findOne(id);
 	}
 
 	async delete(id: number): Promise<void> {
@@ -49,4 +56,3 @@ export class ProductService {
 		await this.delete(id);
 	}
 }
-

@@ -3,9 +3,7 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { validationHandler } from '../middlewares/validator.handler';
 import {
 	ApiResponse,
-	CreateCustomerInput,
-	CustomerInput,
-	UpdateCustomerInput,
+	CustomerInput
 } from '../models';
 import { CustomerService } from '../services/customer.service';
 
@@ -79,7 +77,7 @@ customerRouter.put(
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
 			const id: number = Number(request.params.id);
-			const body: CreateCustomerInput = request.body;
+			const body = request.body;
 
 			const update = await service.update(id, body);
 			const responseApi: ApiResponse<CustomerInput> = {

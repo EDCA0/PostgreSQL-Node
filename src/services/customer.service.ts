@@ -63,12 +63,8 @@ export class CustomerService {
 	}
 
 	async update(id: number, changes: UpdateCustomerDto): Promise<CustomerInput> {
-		await Customers.update(id, {
-			customerName: changes.customerName,
-			customerLastName: changes.customerLastName,
-			customerPhone: changes.customerPhone,
-			updatedAt: new Date(),
-		});
+		await this.findOne(id)
+		await Customers.update(id, changes);
 
 		return this.findOne(id);
 	}

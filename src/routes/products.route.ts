@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos';
-import { Tasks } from '../entity/tasks';
 import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse, Product } from '../models';
 import { ProductService } from '../services/product.service';
@@ -36,8 +35,8 @@ productsRouter.get(
 	'/',
 	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
-			const products: Tasks[] = await service.find();
-			const apiResponse: ApiResponse<Tasks[]> = {
+			const products: Product[] = await service.find();
+			const apiResponse: ApiResponse<Product[]> = {
 				success: true,
 				statusCode: 200,
 				data: products,
@@ -55,7 +54,7 @@ productsRouter.get(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			const product = await service.findOne(id);
 
 			const apiResponse: ApiResponse<Product> = {
@@ -71,38 +70,15 @@ productsRouter.get(
 	},
 );
 
-// PATCH (Actualizacion parcial del contenido)
-productsRouter.patch(
+// PUT (Actualizacion total del contenido)
+productsRouter.put(
 	'/:id',
 	validationHandler(UpdateProductDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			const body: UpdateProductDto = request.body;
-			const updatedProduct = await service.updatePatch(id, body);
-
-			const apiResponse: ApiResponse<Product> = {
-				success: true,
-				statusCode: 200,
-				data: updatedProduct,
-			};
-
-			response.status(200).json(apiResponse);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
-
-// PUT (Actualizacion total del contenido)
-productsRouter.put(
-	'/:id',
-	validationHandler(CreateProductDto),
-	async (request: Request, response: Response, next: NextFunction) => {
-		try {
-			const id: string = request.params.id;
-			const body: CreateProductDto = request.body;
-			const updatedProduct = await service.updatePut(id, body);
+			const updatedProduct = await service.update(id, body);
 
 			const apiResponse: ApiResponse<Product> = {
 				success: true,
@@ -122,7 +98,7 @@ productsRouter.delete(
 	'/:id',
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const id: string = request.params.id;
+			const id: number = Number(request.params.id);
 			await service.delete(id);
 
 			response.sendStatus(204);

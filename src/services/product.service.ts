@@ -1,49 +1,33 @@
-import { faker } from '@faker-js/faker';
 import { CreateProductDto } from '../dtos';
+import { Products } from '../entity';
 import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
-import { Tasks } from '../entity/tasks';
 
 export class ProductService {
 	protected products: Product[] = [];
-	constructor() {
-		this.generate();
-	}
-
-	generate() {
-		const limit: number = 100;
-
-		for (let index = 0; index < limit; index++) {
-			this.products.push({
-				id: faker.string.uuid(),
-				name: faker.commerce.productName(),
-				price: parseInt(faker.commerce.price(), 10),
-				image: faker.image.url(),
-			});
-		}
-	}
+	constructor() {}
 
 	async create(body: CreateProductDto): Promise<Product> {
-		const newBody: Product = {
-			id: faker.string.uuid(),
-			name: body.name,
-			price: body.price,
-			image: body.image,
-		};
+		const newProduct = new Products();
 
-		this.products.push(newBody);
+		Object.assign(newProduct, body)
 
-		return newBody;
+		await newProduct.save()
+		return newProduct
 	}
 
-	async find() {
-		// return this.products;
-		const tasks = await Tasks.find();
-		return tasks;
+	async find() : Promise<Product[]>{
+		const products: Product[] = await Products.find()
+
+		return products;
 	}
 
-	async findOne(id: string): Promise<Product> {
-		const product = this.products.find((product) => product.id === id);
+	async findOne(id: number): Promise<Product> {
+		const product = await Products.findOne({
+			where: {
+				id : id
+			}
+		})
 
 		if (!product) {
 			throw new NotFoundError('Product not found');
@@ -52,43 +36,17 @@ export class ProductService {
 		return product;
 	}
 
-	async updatePatch(id: string, body: UpdateProductInput): Promise<Product> {
-		const index = this.products.findIndex((item) => item.id === id);
+	async update(id: number, changes: UpdateProductInput): Promise<Product> {
+		await this.findOne(id)
+		
+		await Products.update(id, changes);
 
-		if (index === -1) {
-			throw new NotFoundError('Product not found');
-		}
-
-		this.products[index] = {
-			...this.products[index],
-			...body,
-		};
-
-		return this.products[index];
+		return this.findOne(id)
 	}
 
-	async updatePut(id: string, body: UpdateProductInput): Promise<Product> {
-		const index = this.products.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('Product not found');
-		}
-
-		this.products[index] = {
-			...this.products[index],
-			...body,
-		};
-
-		return this.products[index];
-	}
-
-	async delete(id: string): Promise<void> {
-		const index = this.products.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw new NotFoundError('Product not found');
-		}
-
-		this.products.splice(index, 1);
+	async delete(id: number): Promise<void> {
+		await this.findOne(id);
+		await this.delete(id);
 	}
 }
+

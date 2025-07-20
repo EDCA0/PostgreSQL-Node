@@ -1,10 +1,9 @@
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { Users } from '../entity/user';
-import { CreateUserInput, UpdateUserInput, User } from '../models/user.model';
+import { Users } from '../entity/users';
+import { CreateUserInput, User } from '../models/user.model';
 import {
-	BadRequestError,
 	ConflictError,
-	NotFoundError,
+	NotFoundError
 } from '../utils/httpErrors';
 
 export class UserService {
@@ -55,26 +54,9 @@ export class UserService {
 		return user;
 	}
 
-	async updatePatch(id: string, changes: UpdateUserInput): Promise<User> {
-		const userId = Number(id);
-
-		if (isNaN(userId)) {
-			throw new BadRequestError('ID de usuario inválido.');
-		}
-
-		await Users.update(id, {
-			userName: changes.userName,
-			userEmail: changes.userEmail,
-			userPassword: changes.userPassword,
-			userAddress: changes.userAddress,
-			phone: changes.phone,
-			userGender: changes.userGender,
-		});
-
-		return this.findOne(userId);
-	}
-
 	async updatePut(id: number, changes: CreateUserInput): Promise<User> {
+		await this.findOne(id);
+		
 		await Users.update(id, changes);
 
 		return this.findOne(id);

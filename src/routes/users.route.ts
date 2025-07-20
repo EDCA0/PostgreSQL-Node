@@ -68,32 +68,9 @@ usersRouter.get(
 	},
 );
 
-usersRouter.patch(
-	'/:id',
-	validationHandler(UpdateUserDto),
-	async (request: Request, response: Response, next: NextFunction) => {
-		try {
-			const id: string = request.params.id;
-			const body = request.body;
-
-			const updatedUser = await service.updatePatch(id, body);
-
-			const responseApi: ApiResponse<User> = {
-				success: true,
-				statusCode: 200,
-				data: updatedUser,
-			};
-
-			response.status(200).json(responseApi);
-		} catch (error) {
-			next(error);
-		}
-	},
-);
-
 usersRouter.put(
 	'/:id',
-	validationHandler(CreateUserDto),
+	validationHandler(UpdateUserDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
 			const id: number = Number(request.params.id);

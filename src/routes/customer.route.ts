@@ -1,10 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { validationHandler } from '../middlewares/validator.handler';
-import {
-	ApiResponse,
-	CustomerInput
-} from '../models';
+import { ApiResponse, CustomerInput } from '../models';
 import { CustomerService } from '../services/customer.service';
 
 export const customerRouter: Router = express.Router();

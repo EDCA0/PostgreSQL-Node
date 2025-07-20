@@ -54,7 +54,7 @@ export class Customers extends BaseEntity {
 	@UpdateDateColumn({
 		name: 'updated_at',
 		type: 'timestamp',
-		comment: 'Fecha y hora de actualizacion del usuario'
+		comment: 'Fecha y hora de actualizacion del usuario',
 	})
-	declare updatedAt : Date
+	declare updatedAt: Date;
 }

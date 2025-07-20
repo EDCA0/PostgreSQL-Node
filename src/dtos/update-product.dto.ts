@@ -7,7 +7,7 @@ import {
 	IsUrl,
 	Length,
 	Matches,
-	Min
+	Min,
 } from 'class-validator';
 import { trim } from './common.dto';
 

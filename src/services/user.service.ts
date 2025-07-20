@@ -1,10 +1,7 @@
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { Users } from '../entity/users';
 import { CreateUserInput, User } from '../models/user.model';
-import {
-	ConflictError,
-	NotFoundError
-} from '../utils/httpErrors';
+import { ConflictError, NotFoundError } from '../utils/httpErrors';
 
 export class UserService {
 	constructor() {}
@@ -56,7 +53,7 @@ export class UserService {
 
 	async updatePut(id: number, changes: CreateUserInput): Promise<User> {
 		await this.findOne(id);
-		
+
 		await Users.update(id, changes);
 
 		return this.findOne(id);

@@ -1,9 +1,5 @@
 import { Transform } from 'class-transformer';
-import {
-	IsOptional,
-	IsPhoneNumber,
-	Length
-} from 'class-validator';
+import { IsOptional, IsPhoneNumber, Length } from 'class-validator';
 import { trim } from './common.dto';
 
 export class UpdateCustomerDto {

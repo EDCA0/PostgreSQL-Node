@@ -1,10 +1,5 @@
 import { Transform } from 'class-transformer';
-import {
-	IsOptional,
-	IsUrl,
-	Length,
-	Matches
-} from 'class-validator';
+import { IsOptional, IsUrl, Length, Matches } from 'class-validator';
 import { trim, trimLower } from './common.dto';
 
 export class UpdateCategoryDto {

@@ -1,12 +1,14 @@
 import {
 	BaseEntity,
 	Column,
+	CreateDateColumn,
 	Entity,
 	JoinColumn,
 	OneToOne,
 	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
-import { Users } from './user';
+import { Users } from './users';
 
 @Entity('customers')
 export class Customers extends BaseEntity {
@@ -42,18 +44,17 @@ export class Customers extends BaseEntity {
 	})
 	declare user: Users;
 
-	@Column({
-		name: 'createdAt',
-		nullable: false,
-		type: 'date',
-		default: () => 'now()',
+	@CreateDateColumn({
+		name: 'created_at',
+		type: 'timestamp',
+		comment: 'Fecha y hora de creacion del usuario',
 	})
 	declare createdAt: Date;
 
-	@Column({
-		name: 'updatedAt',
-		nullable: true,
-		type: 'date',
+	@UpdateDateColumn({
+		name: 'updated_at',
+		type: 'timestamp',
+		comment: 'Fecha y hora de actualizacion del usuario'
 	})
-	declare updatedAt: Date;
+	declare updatedAt : Date
 }

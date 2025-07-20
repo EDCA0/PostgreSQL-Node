@@ -1,13 +1,14 @@
 import {
 	BaseEntity,
 	Column,
+	CreateDateColumn,
 	Entity,
-	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
+	UpdateDateColumn
 } from 'typeorm';
 import { Gender } from '../models';
-import { Customers } from './customer';
+import { Customers } from './customers';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -81,13 +82,17 @@ export class Users extends BaseEntity {
 	@OneToOne(() => Customers, (customer) => customer.user)
 	declare customer: Customers;
 
-	@Column({
+	@CreateDateColumn({
 		name: 'created_at',
 		type: 'timestamp',
-		update: false,
-		nullable: false,
-		default: () => 'CURRENT_TIMESTAMP',
 		comment: 'Fecha y hora de creacion del usuario',
 	})
 	declare createdAt: Date;
+
+	@UpdateDateColumn({
+		name: 'updated_at',
+		type: 'timestamp',
+		comment: 'Fecha y hora de actualizacion del usuario'
+	})
+	declare updatedAt : Date
 }

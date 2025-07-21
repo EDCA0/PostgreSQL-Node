@@ -10,13 +10,13 @@ export class ProductService {
 	async create(body: CreateProductDto): Promise<Product> {
 		const categoryExists = await Categories.findOne({
 			where: {
-				id: body.category
-			}
-		})
-		console.log(categoryExists)
+				id: body.category,
+			},
+		});
+		console.log(categoryExists);
 
-		if(!categoryExists) {
-			throw new NotFoundError('El id De la categoria no existe')
+		if (!categoryExists) {
+			throw new NotFoundError('El id De la categoria no existe');
 		}
 
 		const newProduct = new Products();

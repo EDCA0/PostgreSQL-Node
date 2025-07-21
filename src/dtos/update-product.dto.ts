@@ -62,13 +62,13 @@ export class UpdateProductDto {
 
 	@IsOptional()
 	@IsInt({
-		message: 'El categoryId debe ser un entero'
+		message: 'El categoryId debe ser un entero',
 	})
 	@IsPositive({
-		message: 'EL categoryId debe ser un numero positivo'
+		message: 'EL categoryId debe ser un numero positivo',
 	})
 	@Min(1, {
-		message: 'El categoryId debe ser minimo $constraint1'
+		message: 'El categoryId debe ser minimo $constraint1',
 	})
-	declare category : number
+	declare category: number;
 }

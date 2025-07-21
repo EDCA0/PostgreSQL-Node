@@ -14,9 +14,8 @@ import { trim } from './common.dto';
 export class UpdateProductDto {
 	@IsOptional()
 	@Transform(trim)
-	@Matches(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s'-]+$/, {
-		message:
-			'El nombre solo puede contener letras, espacios, apóstrofes y guiones',
+	@Matches(/^[0-9A-Za-zÁÉÍÓÚáéíóúÑñ\s,.\-]+$/, {
+		message: 'La dirección contiene caracteres inválidos',
 	})
 	@Length(2, 60, {
 		message:

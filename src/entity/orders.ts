@@ -4,16 +4,18 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 import { Customers } from './customers';
+import { OrderProduct } from './order-product';
 
 @Entity('orders')
 export class Orders extends BaseEntity {
 	@PrimaryGeneratedColumn({
 		name: 'order_id',
-		comment: 'orden, generado automaticamente, es unico por producto',
+		comment: 'identificador único para cada orden de compra',
 	})
 	declare id: number;
 
@@ -34,4 +36,7 @@ export class Orders extends BaseEntity {
 		comment: 'Fecha y hora de actualizacion del Producto',
 	})
 	declare updatedAt: Date;
+
+	@OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+	declare orderProduct : OrderProduct[]
 }

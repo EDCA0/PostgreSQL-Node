@@ -5,10 +5,12 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 import { Categories } from './categories';
+import { OrderProduct } from './order-product';
 
 @Entity('products')
 export class Products extends BaseEntity {
@@ -23,7 +25,7 @@ export class Products extends BaseEntity {
 		type: 'varchar',
 		length: 60,
 		nullable: false,
-		comment: 'nombre del usuario',
+		comment: 'nombre del producto',
 	})
 	declare productName: string;
 
@@ -70,4 +72,8 @@ export class Products extends BaseEntity {
 		comment: 'Fecha y hora de actualizacion del Producto',
 	})
 	declare updatedAt: Date;
+
+
+	@OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+	declare orderProduct : OrderProduct[]
 }

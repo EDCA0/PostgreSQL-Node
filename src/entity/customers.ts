@@ -4,11 +4,14 @@ import {
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
+	ManyToMany,
+	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 import { Users } from './users';
+import { Orders } from './orders';
 
 @Entity('customers')
 export class Customers extends BaseEntity {
@@ -43,6 +46,9 @@ export class Customers extends BaseEntity {
 		name: 'userId',
 	})
 	declare user: Users;
+
+	@OneToMany(() => Orders, (order) => order.customer)
+	declare order: Orders;
 
 	@CreateDateColumn({
 		name: 'created_at',

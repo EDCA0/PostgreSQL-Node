@@ -13,7 +13,7 @@ export class CategoryService {
 	constructor() {}
 
 	// POST (crear categoria)
-	async create(body: CreateCategoryDto): Promise<CategoryInput> {
+	async create(body: CreateCategoryDto): Promise<Categories> {
 		const newCategory = new Categories();
 
 		Object.assign(newCategory, body);

@@ -5,6 +5,7 @@ import { customerRouter } from './customer.route';
 import { inicioRouter } from './inicio.route';
 import { productsRouter } from './products.route';
 import { usersRouter } from './users.route';
+import { ordersRouter } from './order.route';
 
 export function routerApi(app: Application): void {
 	const router: Router = express.Router();
@@ -15,4 +16,5 @@ export function routerApi(app: Application): void {
 	router.use('/products', productsRouter);
 	router.use('/users', usersRouter);
 	router.use('/customers', customerRouter);
+	router.use('/orders', ordersRouter)
 }

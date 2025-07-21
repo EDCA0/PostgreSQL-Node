@@ -1,5 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import {
+	IsInt,
 	IsNotEmpty,
 	IsNumber,
 	IsPositive,
@@ -63,4 +64,18 @@ export class CreateProductDto {
 		},
 	)
 	declare productImage: string;
+
+	@IsNotEmpty({
+		message: 'El categoryId no puede estar vacia'
+	})
+	@IsInt({
+		message: 'El categoryId debe ser un entero'
+	})
+	@IsPositive({
+		message: 'EL categoryId debe ser un numero positivo'
+	})
+	@Min(1, {
+		message: 'El categoryId debe ser minimo $constraint1'
+	})
+	declare category : number
 }

@@ -1,5 +1,5 @@
 import { CreateProductDto } from '../dtos';
-import { Products } from '../entity';
+import { Categories, Products } from '../entity';
 import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
 
@@ -8,6 +8,17 @@ export class ProductService {
 	constructor() {}
 
 	async create(body: CreateProductDto): Promise<Product> {
+		const categoryExists = await Categories.findOne({
+			where: {
+				id: body.category
+			}
+		})
+		console.log(categoryExists)
+
+		if(!categoryExists) {
+			throw new NotFoundError('El id De la categoria no existe')
+		}
+
 		const newProduct = new Products();
 
 		Object.assign(newProduct, body);
@@ -17,11 +28,7 @@ export class ProductService {
 	}
 
 	async find(): Promise<Product[]> {
-		const products: Product[] = await Products.find({
-			relations: {
-				category: true,
-			},
-		});
+		const products: Product[] = await Products.find();
 
 		return products;
 	}
@@ -53,6 +60,6 @@ export class ProductService {
 
 	async delete(id: number): Promise<void> {
 		await this.findOne(id);
-		await this.delete(id);
+		await Products.delete(id);
 	}
 }

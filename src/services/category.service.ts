@@ -23,11 +23,7 @@ export class CategoryService {
 
 	//  GET (Traer todos)
 	async find(): Promise<CategoryInput[]> {
-		const categories: CategoryInput[] = await Categories.find({
-			relations: {
-				products: true,
-			},
-		});
+		const categories: CategoryInput[] = await Categories.find({});
 
 		return categories;
 	}

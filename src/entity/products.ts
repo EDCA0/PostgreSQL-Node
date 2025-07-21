@@ -73,7 +73,6 @@ export class Products extends BaseEntity {
 	})
 	declare updatedAt: Date;
 
-
 	@OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
-	declare orderProduct : OrderProduct[]
+	declare orderProduct: OrderProduct[];
 }

@@ -5,6 +5,7 @@ import { OrderProduct } from '../entity/order-product';
 import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse } from '../models';
 import { OrderProductService } from '../services/orderProduct.service';
+import { processQueryParams } from '../utils/queryProcessor';
 
 export const orderProductRouter: Router = express.Router();
 const service = new OrderProductService();
@@ -36,36 +37,7 @@ orderProductRouter.get(
     '/',
     async (request: Request, response: Response, next: NextFunction) => {
  try {
-            let skip: number | undefined;
-            let take: number | undefined;
-            let sortByColumn: string | undefined;
-            let sortDirection: string | undefined;
-
-            // Procesar 'skip'
-            if (request.query.skip) {
-                const parsedSkip = Number(request.query.skip);
-                if (!isNaN(parsedSkip)) { // Asegurarse de que es un número válido
-                    skip = parsedSkip;
-                }
-            }
-
-            // Procesar 'take'
-            if (request.query.take) {
-                const parsedTake = Number(request.query.take);
-                if (!isNaN(parsedTake)) { // Asegurarse de que es un número válido
-                    take = parsedTake;
-                }
-            }
-
-            // Procesar 'sortByColumn'
-            if (request.query.sortByColumn) {
-                sortByColumn = request.query.sortByColumn as string;
-            }
-
-            // Procesar 'sortDirection'
-            if (request.query.sortDirection) {
-                sortDirection = request.query.sortDirection as string;
-            }
+            const { skip, take, sortByColumn, sortDirection } = processQueryParams(request.query);
 
             // Llama a tu función de servicio con los parámetros obtenidos
             const ordersProducts: OrderProduct[] = await service.find(

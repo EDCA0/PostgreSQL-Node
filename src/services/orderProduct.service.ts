@@ -1,12 +1,8 @@
 import { FindManyOptions } from 'typeorm';
-import { CreateProductDto } from '../dtos';
-import { CreateOrderDto } from '../dtos/create-order.dto';
 import { CreateOrderProductDto } from '../dtos/create-orderProduct.dto';
-import { Categories, Orders, Products } from '../entity';
+import { Orders, Products } from '../entity';
 import { OrderProduct } from '../entity/order-product';
-import { Product, UpdateProductInput } from '../models/index';
 import { NotFoundError } from '../utils/httpErrors';
-import { AppDataSource } from '../data-source';
 
 export class OrderProductService {
     constructor() {}

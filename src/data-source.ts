@@ -22,6 +22,4 @@ export const dataSourceOptions: DataSourceOptions = {
 	subscribers: [],
 };
 
-
-
 export const AppDataSource = new DataSource(dataSourceOptions);

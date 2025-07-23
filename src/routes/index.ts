@@ -18,5 +18,5 @@ export function routerApi(app: Application): void {
 	router.use('/users', usersRouter);
 	router.use('/customers', customerRouter);
 	router.use('/orders', ordersRouter);
-	router.use('/orderProduct', orderProductRouter)
+	router.use('/orderProduct', orderProductRouter);
 }

@@ -11,7 +11,7 @@ import {
 import { Orders } from './orders';
 import { Products } from './products';
 
-@Entity('order-product')
+@Entity('order_product')
 export class OrderProduct extends BaseEntity {
 	@PrimaryGeneratedColumn({
 		name: 'id',

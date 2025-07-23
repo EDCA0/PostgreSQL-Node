@@ -2,15 +2,15 @@ import { IsInt, IsNotEmpty, IsPositive, Min } from 'class-validator';
 
 export class CreateOrderProductDto {
 	@IsNotEmpty({
-		message: 'El customerId no puede estar vacio',
+		message: 'El OrderId no puede estar vacio',
 	})
 	@IsInt({
-		message: 'El customerId debe de ser un entero',
+		message: 'El OrderId debe de ser un entero',
 	})
 	@IsPositive({
-		message: 'El customerId debe ser un numero positivo',
+		message: 'El OrderId debe ser un numero positivo',
 	})
-	declare customer: number;
+	declare order: number;
 
 	@IsNotEmpty({
 		message: 'El productId no puede estar vacio',

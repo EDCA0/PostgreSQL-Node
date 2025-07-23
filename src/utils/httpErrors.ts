@@ -35,3 +35,9 @@ export class ConflictError extends HttpError {
 		super(message, 409);
 	}
 }
+
+export class UnauthorizedError extends HttpError {
+	constructor(message: string | string[] = 'Usuario sin permisos') {
+		super(message, 401);
+	}
+}

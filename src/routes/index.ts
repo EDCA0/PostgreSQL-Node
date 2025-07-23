@@ -7,12 +7,13 @@ import { productsRouter } from './products.route';
 import { usersRouter } from './users.route';
 import { ordersRouter } from './order.route';
 import { orderProductRouter } from './orderProduct.route';
+import { checkApiKey } from '../middlewares/auth.handler';
 
 export function routerApi(app: Application): void {
 	const router: Router = express.Router();
 	app.use('/api/v1', router);
 
-	router.use('/categories', categoriesRouter);
+	router.use('/categories', checkApiKey, categoriesRouter);
 	router.use('/inicio', inicioRouter);
 	router.use('/products', productsRouter);
 	router.use('/users', usersRouter);

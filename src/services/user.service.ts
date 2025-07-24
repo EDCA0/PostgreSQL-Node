@@ -4,7 +4,6 @@ import { Users } from '../entity/users';
 import { CreateUserInput, User } from '../models/user.model';
 import { ConflictError, NotFoundError } from '../utils/httpErrors';
 
-
 export class UserService {
 	constructor() {}
 
@@ -25,8 +24,8 @@ export class UserService {
 
 		Object.assign(newUser, body);
 		await newUser.save();
-		const showData : User = newUser
-		delete showData.userPassword
+		const showData: User = newUser;
+		delete showData.userPassword;
 
 		return showData;
 	}
@@ -37,12 +36,10 @@ export class UserService {
 	}
 
 	async findByEmail(email: string): Promise<Users> {
-		const users = await Users.findOneBy(
-			{userEmail: email}	
-		);
+		const users = await Users.findOneBy({ userEmail: email });
 
 		if (!users) {
-			throw new NotFoundError(`No existe el email: ${email}`)
+			throw new NotFoundError(`No existe el email: ${email}`);
 		}
 
 		return users;

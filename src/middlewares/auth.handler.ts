@@ -4,7 +4,7 @@ import { UnauthorizedError } from '../utils/httpErrors';
 
 export function checkApiKey(
 	request: Request,
-	response: Response,
+	_response: Response,
 	next: NextFunction,
 ) {
 	const apiKey = request.headers['api'];

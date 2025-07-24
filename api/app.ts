@@ -2,7 +2,8 @@ import cors, { CorsOptions } from 'cors';
 import express, { Request, Response } from 'express';
 import 'reflect-metadata';
 import { errorHandler, logErrors } from '../src/middlewares/error.handler';
-import { routerApi } from '../src/routes';
+import { authRouter } from '../src/routes/auth.route';
+import '../src/utils/auth/index';
 
 export const app = express();
 
@@ -23,8 +24,8 @@ const options: CorsOptions = {
 };
 
 app.use(cors(options));
+app.use('/auth', authRouter)
 
-routerApi(app);
 
 app.use(logErrors);
 app.use(errorHandler);

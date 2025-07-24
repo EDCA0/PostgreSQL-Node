@@ -32,11 +32,19 @@ export class UserService {
 	}
 
 	async find(): Promise<User[]> {
-		const users: User[] = await Users.find({
-			relations: {
-				customer: true,
-			},
-		});
+		const users: User[] = await Users.find();
+		return users;
+	}
+
+	async findByEmail(email: string): Promise<Users> {
+		const users = await Users.findOneBy(
+			{userEmail: email}	
+		);
+
+		if (!users) {
+			throw new NotFoundError(`No existe el email: ${email}`)
+		}
+
 		return users;
 	}
 

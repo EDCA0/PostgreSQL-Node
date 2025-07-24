@@ -37,11 +37,7 @@ export class CustomerService {
 	}
 
 	async find(): Promise<CustomerInput[]> {
-		const customers: CustomerInput[] = await Customers.find({
-			relations: {
-				user: true,
-			},
-		});
+		const customers: CustomerInput[] = await Customers.find({});
 		return customers;
 	}
 

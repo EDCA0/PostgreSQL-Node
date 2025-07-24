@@ -1,12 +1,16 @@
+import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { Users } from '../entity/users';
 import { CreateUserInput, User } from '../models/user.model';
 import { ConflictError, NotFoundError } from '../utils/httpErrors';
 
+
 export class UserService {
 	constructor() {}
 
 	async create(body: CreateUserDto): Promise<User> {
+		body.userPassword = await bcrypt.hash(body.userPassword, 10);
+
 		const exist = await Users.findOneBy({
 			userEmail: body.userEmail,
 		});
@@ -20,9 +24,11 @@ export class UserService {
 		const newUser = new Users();
 
 		Object.assign(newUser, body);
-
 		await newUser.save();
-		return newUser;
+		const showData : User = newUser
+		delete showData.userPassword
+
+		return showData;
 	}
 
 	async find(): Promise<User[]> {

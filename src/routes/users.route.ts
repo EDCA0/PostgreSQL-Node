@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { Users } from '../entity';
 import { validationHandler } from '../middlewares/validator.handler';
 import { ApiResponse, User } from '../models';
 import { UserService } from '../services/user.service';
@@ -12,7 +13,7 @@ usersRouter.post(
 	validationHandler(CreateUserDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
-			const body: User = request.body;
+			const body: Users = request.body;
 			const newUser: User = await service.create(body);
 
 			const responseApi: ApiResponse<User> = {

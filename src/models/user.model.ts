@@ -8,7 +8,7 @@ export interface User {
 	readonly id: number;
 	userName: string;
 	userEmail: string;
-	userPassword: string;
+	userPassword?: string;
 	userAddress: string;
 	phone: string;
 	userGender: Gender;

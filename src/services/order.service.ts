@@ -1,6 +1,5 @@
 import { CreateOrderDto } from '../dtos/create-order.dto';
 import { Customers, Orders } from '../entity';
-import { OrderOutput } from '../models';
 import { NotFoundError } from '../utils/httpErrors';
 
 export class OrderService {

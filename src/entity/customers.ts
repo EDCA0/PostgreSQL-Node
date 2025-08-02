@@ -4,14 +4,13 @@ import {
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
-	ManyToMany,
 	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { Users } from './users';
 import { Orders } from './orders';
+import { Users } from './users';
 
 @Entity('customers')
 export class Customers extends BaseEntity {

@@ -1,10 +1,6 @@
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { Categories } from '../entity';
-import {
-	CategoryInput,
-	UpdateCategoryInput,
-	CreateCategoryInput,
-} from '../models';
+import { CategoryInput, CreateCategoryInput } from '../models';
 import { NotFoundError } from '../utils/httpErrors';
 
 export class CategoryService {

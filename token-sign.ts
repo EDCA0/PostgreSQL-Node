@@ -3,18 +3,19 @@ import { JWTPayload, SignJWT } from 'jose';
 export interface MyTokenPayload extends JWTPayload {
   sub: string;
   role: string;
+  email?: string;
   permissions?: string[]; // La propiedad 'permissions' es opcional
   // Añade aquí cualquier otro dato que esperes en el payload
 }
 
 
-export const secret = 'myCat' //❗ Debe de estar en una variable de ambiente, ❗ Como deberia llamarse la variable de ambiente?
+export const secret = 'myCat' 
 const payload = {
-    sub: "1", //❗ Que significa sub
-    role: 'customer' //❗ Aca va el scope, Que cuenta como scope, que se deberia poner?
+    sub: "1", 
+    role: 'customer' 
 }
 
-async function signToken (payload: MyTokenPayload, secret: string) {
+export async function signToken (payload: MyTokenPayload, secret: string) {
  // jose requiere que el secreto sea una Uint8Array.
   // Es crucial que el secreto sea robusto y mantenido de forma segura.
   const secretBytes = new TextEncoder().encode(secret);

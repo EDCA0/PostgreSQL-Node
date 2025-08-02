@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 import { UserService } from '../../../services/user.service';
-import { UnauthorizedError } from '../../httpErrors';
+import { NotFoundError, UnauthorizedError } from '../../httpErrors';
+import { User, UserRequest } from '../../../models';
 const service = new UserService();
 
 export const localStrategy = new Strategy(
@@ -12,11 +13,28 @@ export const localStrategy = new Strategy(
 	async (email, password, done) => {
 		try {
 			const user = await service.findByEmail(email);
-			const isMatch = await bcrypt.compare(password, user.userPassword);
-			if (!isMatch) {
-				done(new UnauthorizedError('Contraseña o correo incorrecta'), false);
+
+			if(!user) {
+			    throw new UnauthorizedError('Correo o contraseña incorrectos');
 			}
-			done(null, user);
+
+			if(!user.userPassword) {
+				throw new NotFoundError('No se encuentra la contraseña del usuario')
+			}
+
+			const isMatch = await bcrypt.compare(password, user.userPassword);
+			
+			const verifyUser : UserRequest = {
+				id: user.id,
+				email: user.userEmail,
+				role: user.userRole
+			}
+
+			if (!isMatch) {
+				throw new UnauthorizedError('Contraseña o correo incorrecta');
+			}
+
+			done(null, verifyUser);
 		} catch (error) {
 			done(error, false);
 		}

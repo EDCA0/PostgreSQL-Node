@@ -3,13 +3,14 @@ import {
 	IsEmail,
 	IsEnum,
 	IsNotEmpty,
+	IsOptional,
 	IsPhoneNumber,
 	IsString,
 	IsStrongPassword,
 	Length,
 	Matches,
 } from 'class-validator';
-import { Gender } from '../models/user.model';
+import { Gender, Roles } from '../models/user.model';
 import { trim, trimLower } from './common.dto';
 
 export class CreateUserDto {
@@ -85,4 +86,11 @@ export class CreateUserDto {
 		message: 'El género debe ser uno de: ' + Object.values(Gender).join(', '),
 	})
 	declare userGender: Gender;
+
+	@IsOptional()
+	@Transform(trimLower)
+	@IsEnum(Roles, {
+		message: 'Rol invalido'
+	})
+	declare userRole?: string;
 }

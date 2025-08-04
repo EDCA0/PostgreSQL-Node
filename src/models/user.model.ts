@@ -4,6 +4,12 @@ export enum Gender {
 	OTHER = 'other',
 }
 
+export enum Roles {
+	ADMIN = 'admin',
+	SELLER = 'seller',
+	CUSTOMER = 'customer'
+}
+
 export interface User {
 	readonly id: number;
 	userName: string;
@@ -12,7 +18,7 @@ export interface User {
 	userAddress: string;
 	phone: string;
 	userGender: Gender;
-	userRole: string;
+	userRole: Roles;
 	createdAt: Date;
 }
 

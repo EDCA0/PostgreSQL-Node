@@ -7,7 +7,7 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { Gender } from '../models';
+import { Gender, Roles } from '../models';
 import { Customers } from './customers';
 
 @Entity('users')
@@ -77,7 +77,7 @@ export class Users extends BaseEntity {
 		type: 'varchar',
 		default: 'customer',
 	})
-	declare userRole: string;
+	declare userRole: Roles;
 
 	@OneToOne(() => Customers, (customer) => customer.user)
 	declare customer: Customers;

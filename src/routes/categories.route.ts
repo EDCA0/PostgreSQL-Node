@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response, Router } from 'express';
 
+import passport from 'passport';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
+import { checkRoles } from '../middlewares/auth.handler';
 import { validationHandler } from '../middlewares/validator.handler';
-import { ApiResponse, CategoryInput } from '../models';
+import { ApiResponse, CategoryInput, Roles } from '../models';
 import { CategoryService } from '../services/category.service';
 
 export const categoriesRouter: Router = express.Router();
@@ -11,6 +13,8 @@ const service = new CategoryService();
 // POST (crear uno)
 categoriesRouter.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
+	checkRoles(Roles.ADMIN),
 	validationHandler(CreateCategoryDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
@@ -33,6 +37,8 @@ categoriesRouter.post(
 // GET (traer todos)
 categoriesRouter.get(
 	'/',
+	passport.authenticate('jwt', { session: false }),
+	checkRoles(Roles.ADMIN, Roles.CUSTOMER),
 	async (_request: Request, response: Response, next: NextFunction) => {
 		try {
 			const categories: CategoryInput[] = await service.find();
@@ -53,6 +59,8 @@ categoriesRouter.get(
 // GET (Traer uno)
 categoriesRouter.get(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	checkRoles(Roles.ADMIN),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
 			const id = Number(request.params.id);

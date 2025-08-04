@@ -11,14 +11,13 @@ export function validationHandler(dtoClass: any) {
 				whitelist: true,
 			});
 
-			
 			if (errors.length > 0) {
 				const messages: string[] = errors.flatMap((error) =>
 					Object.values(error.constraints ?? {}),
 				);
-			
+
 				console.log('resultado de la validacion:', errors);
-				
+
 				throw new BadRequestError(messages);
 			}
 			request.body = dtoInstance;

@@ -48,8 +48,8 @@ export class OrderService {
 		return product;
 	}
 
-	async findByUser(id: number): Promise<Orders[]> {
-		console.log(id)
+	async findByIdUser(id: number): Promise<Orders[]> {
+		console.log(id);
 		const product = await Orders.find({
 			select: {
 				id: true,
@@ -59,13 +59,15 @@ export class OrderService {
 					customerName: true,
 					customerLastName: true,
 					customerPhone: true,
-				}
+				},
 			},
 			where: {
-				id: id,
+				customer: {
+					id: id
+				}
 			},
 			relations: {
-				customer: true
+				customer: true,
 			},
 		});
 

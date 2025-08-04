@@ -5,12 +5,12 @@ import { ApiResponse, CustomerInput } from '../models';
 import { CustomerService } from '../services/customer.service';
 import passport from 'passport';
 
-
 export const customerRouter: Router = express.Router();
 const service = new CustomerService();
 
 customerRouter.post(
-	'/', passport.authenticate('jwt', { session: false }),
+	'/',
+	passport.authenticate('jwt', { session: false }),
 	validationHandler(CreateCustomerDto),
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {

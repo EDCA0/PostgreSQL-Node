@@ -8,13 +8,6 @@ export interface MyTokenPayload extends JWTPayload {
   // Añade aquí cualquier otro dato que esperes en el payload
 }
 
-
-export const secret = 'myCat' 
-const payload = {
-    sub: "1", 
-    role: 'customer' 
-}
-
 export async function signToken (payload: MyTokenPayload, secret: string) {
  // jose requiere que el secreto sea una Uint8Array.
   // Es crucial que el secreto sea robusto y mantenido de forma segura.
@@ -30,10 +23,3 @@ export async function signToken (payload: MyTokenPayload, secret: string) {
 
     return token;
 }
-
-async function prueba() {
-    const token = await signToken(payload, secret);
-    console.log(token);
-}
-
-prueba()

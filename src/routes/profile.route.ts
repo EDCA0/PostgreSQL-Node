@@ -14,12 +14,10 @@ profileRouter.get(
 	async (request: Request, response: Response, next: NextFunction) => {
 		try {
 			const user = request.user;
-			console.log(user);
 			if (!user) {
 				throw new UnauthorizedError('No tiene permisos');
 			}
 
-			console.log(user);
 			const order = await service.findByIdUser(user.id);
 
 			const apiResponse: ApiResponse<Orders[]> = {

@@ -13,7 +13,6 @@ export class OrderProductService {
 				id: body.order,
 			},
 		});
-		console.log(orderExists);
 
 		if (!orderExists) {
 			throw new NotFoundError('El id De la orden no existe');
@@ -24,7 +23,6 @@ export class OrderProductService {
 				id: body.product,
 			},
 		});
-		console.log(productExists);
 
 		if (!productExists) {
 			throw new NotFoundError('El id Del producto no existe');

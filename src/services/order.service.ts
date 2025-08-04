@@ -49,7 +49,6 @@ export class OrderService {
 	}
 
 	async findByIdUser(id: number): Promise<Orders[]> {
-		console.log(id);
 		const product = await Orders.find({
 			select: {
 				id: true,

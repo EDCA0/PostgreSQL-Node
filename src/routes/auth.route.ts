@@ -29,8 +29,6 @@ authRouter.post(
 				email: user.email,
 				role: user.role,
 			};
-			console.log('PAYLOAD A FIRMAR:', payload);
-			console.log('SECRETO A USAR:', secret);
 			const token = await signToken(payload, secret);
 
 			const responseApi: ApiResponse<any> = {

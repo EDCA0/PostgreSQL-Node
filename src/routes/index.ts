@@ -9,6 +9,7 @@ import { ordersRouter } from './order.route';
 import { orderProductRouter } from './orderProduct.route';
 import { productsRouter } from './products.route';
 import { usersRouter } from './users.route';
+import { profileRouter } from './profile.route';
 
 export function routerApi(app: Application): void {
 	const router: Router = express.Router();
@@ -22,4 +23,5 @@ export function routerApi(app: Application): void {
 	router.use('/orders', ordersRouter);
 	router.use('/orderProduct', orderProductRouter);
 	router.use('/auth', authRouter);
+	router.use('/profile', profileRouter)
 }

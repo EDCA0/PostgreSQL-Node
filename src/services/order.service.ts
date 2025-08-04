@@ -48,6 +48,34 @@ export class OrderService {
 		return product;
 	}
 
+	async findByUser(id: number): Promise<Orders[]> {
+		console.log(id)
+		const product = await Orders.find({
+			select: {
+				id: true,
+				createdAt: true,
+				updatedAt: true,
+				customer: {
+					customerName: true,
+					customerLastName: true,
+					customerPhone: true,
+				}
+			},
+			where: {
+				id: id,
+			},
+			relations: {
+				customer: true
+			},
+		});
+
+		if (!product) {
+			throw new NotFoundError('Product not found');
+		}
+
+		return product;
+	}
+
 	async delete(id: number): Promise<void> {
 		await this.findOne(id);
 		await Orders.delete(id);
